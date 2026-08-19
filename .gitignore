@@ -1,0 +1,37 @@
+# Ambiente virtual Python
+.venv/
+venv/
+env/
+
+# Executável
+compilador
+
+# Arquivos gerados pelo Flex
+lex.yy.c
+
+# Arquivos gerados pelo Bison
+parser.tab.c
+parser.tab.h
+
+# Arquivos objeto
+*.o
+
+# Arquivos de saída
+*.out
+
+# Arquivos temporários
+*~
+*.swp
+*.swo
+
+# Diretórios de build
+build/
+bin/
+
+# Editores
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
