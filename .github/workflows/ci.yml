@@ -1,4 +1,4 @@
-nname: Deployment MkDocs
+name: Deployment MkDocs
 on: 
   push:
     branches:
