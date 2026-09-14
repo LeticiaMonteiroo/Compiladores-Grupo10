@@ -15,11 +15,11 @@ TARGET = compilador
 
 all: $(TARGET)
 
-$(LEX_OUT): $(LEXER_SRC)
-	flex $(LEXER_SRC)
-
 $(PARSER_OUT_C) $(PARSER_OUT_H): $(PARSER_SRC)
 	bison -d $(PARSER_SRC)
+
+$(LEX_OUT): $(LEXER_SRC) $(PARSER_OUT_H)
+	flex $(LEXER_SRC)
 
 $(TARGET): $(LEX_OUT) $(PARSER_OUT_C)
 	$(CC) $(CFLAGS) -o $(TARGET) $(LEX_OUT) $(PARSER_OUT_C) $(LDLIBS)
