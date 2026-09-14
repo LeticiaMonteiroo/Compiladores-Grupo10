@@ -1,9 +1,28 @@
 %{
 #include "parser.tab.h"
+#include <stdlib.h>
 %}
 
 %%
 
+/* Palavras-chave do escopo de métodos e retornos */
+"public"        { return PUBLIC; }
+"private"       { return PRIVATE; }
+"protected"     { return PROTECTED; }
+"static"        { return STATIC; }
+"void"          { return VOID; }
+"int"           { return INT; }
+"return"        { return RETURN; }
+
+/* Identificadores (Nomes de classes, métodos e variáveis) */
+[a-zA-Z_][a-zA-Z0-9_]* { return ID; }
+
+/* Operadores estruturais de métodos e blocos */
+"{"             { return LBRACE; }
+"}"             { return RBRACE; }
+","             { return COMMA; }
+
+/* Regras originais do colega */
 [0-9]+          { yylval = atoi(yytext); return NUM; }
 
 "++"            { return INC; }
