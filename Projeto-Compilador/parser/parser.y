@@ -187,6 +187,7 @@ expressao:
   | DEC expressao
   | expressao DEC
   | MINUS expressao %prec UMINUS
+  | MINUS expressao %prec UMINUS
   | LPAREN expressao RPAREN
   | IDENTIFIER                              /* variável local */
   | IDENTIFIER LPAREN argumentos_opt RPAREN /* chamada de metodo */
