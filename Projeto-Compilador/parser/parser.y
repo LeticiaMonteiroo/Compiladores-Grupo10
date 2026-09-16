@@ -6,16 +6,46 @@ int yylex(void);
 void yyerror(const char *s);
 %}
 
-/* 1. Declaração de todos os tokens que vêm do Flex */
-%token NUM
+/* -----gera campo de memoria para armazenar um tipo de valor----- */
+%union {
+    int    ival;
+    double dval;
+    char   cval;
+    char*  sval;
+    int    boolval;
+}
+
+/* -----palavras reservadas-------------- */
+%token CLASS
+%token PUBLIC PRIVATE PROTECTED STATIC VOID RETURN
+
+/* -----tipos primitivos-------------- */
+%token TYPE_INT TYPE_DOUBLE TYPE_FLOAT TYPE_BOOLEAN TYPE_CHAR
+%token TYPE_LONG TYPE_SHORT TYPE_BYTE TYPE_STRING
+
+/* -----literais tipados-------------- */
+%token <ival>    INT_LITERAL
+%token <dval>    DOUBLE_LITERAL
+%token <sval>    STRING_LITERAL
+%token <cval>    CHAR_LITERAL
+%token <boolval> BOOLEAN_LITERAL
+%token NULL_LITERAL
+
+/* ----------identificador---------- */
+%token <sval> IDENTIFIER
+
+/* ----------operadores e delimitadores---------- */
 %token INC DEC PLUS MINUS TIMES DIVIDE MOD
 %token EQ NEQ GTE LTE GT LT
 %token AND OR NOT
 %token URSHIFT LSHIFT RSHIFT BIT_AND BIT_OR BIT_XOR BIT_NOT
 %token PLUS_ASSIGN MINUS_ASSIGN TIMES_ASSIGN DIVIDE_ASSIGN MOD_ASSIGN ASSIGN
-%token LPAREN RPAREN SEMI
+%token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET SEMICOLON COMMA DOT
 
-/* 2. Regras de Precedência e Associatividade (Da MENOR para a MAIOR precedência) */
+/* ----------tipos dos nao-terminais---------- */
+%type <sval> tipo tipo_retorno
+
+/* 2. Precedencia e associatividade */
 %right ASSIGN PLUS_ASSIGN MINUS_ASSIGN TIMES_ASSIGN DIVIDE_ASSIGN MOD_ASSIGN
 %left OR
 %left AND
@@ -27,17 +57,103 @@ void yyerror(const char *s);
 %left LSHIFT RSHIFT URSHIFT
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
-%right NOT BIT_NOT INC DEC UMINUS /* UMINUS é um token falso (pseudo-token) para o menos unário */
+%right NOT BIT_NOT INC DEC UMINUS
 
 %%
 
-/* Regra raiz para aceitar múltiplas expressões no arquivo */
+/* classe unica contendo variaveis e metodos  */
 programa:
-    programa expressao SEMI
-  | expressao SEMI
+    PUBLIC CLASS IDENTIFIER LBRACE lista_membros RBRACE
+        { printf("Classe '%s' reconhecida com sucesso.\n", $3); }
   ;
 
-/* 3. Expansão das regras gramaticais para os operadores */
+lista_membros:
+    lista_membros membro
+  | /* vazio */
+  ;
+
+membro:
+    declaracao_variavel
+  | metodo
+  ;
+
+/* 3. Metodos, parametros e retorno */
+metodo:
+    modificadores tipo_retorno IDENTIFIER LPAREN parametros_opt RPAREN bloco
+        { printf("Metodo '%s' reconhecido.\n", $3); }
+  ;
+
+modificadores:
+    modificadores modificador
+  | /* vazio */
+  ;
+
+modificador:
+    PUBLIC | PRIVATE | PROTECTED | STATIC
+  ;
+
+tipo_retorno:
+    tipo   { $$ = $1; }
+  | VOID   { $$ = "void"; }
+  ;
+
+/* agrupa os tipos primitivos + tipos customizados */
+tipo:
+    TYPE_INT      { $$ = "int"; }
+  | TYPE_DOUBLE   { $$ = "double"; }
+  | TYPE_FLOAT    { $$ = "float"; }
+  | TYPE_BOOLEAN  { $$ = "boolean"; }
+  | TYPE_CHAR     { $$ = "char"; }
+  | TYPE_LONG     { $$ = "long"; }
+  | TYPE_SHORT    { $$ = "short"; }
+  | TYPE_BYTE     { $$ = "byte"; }
+  | TYPE_STRING   { $$ = "String"; }
+  | IDENTIFIER    { $$ = $1; }
+  ;
+
+parametros_opt:
+    lista_parametros
+  | /* vazio */
+  ;
+
+lista_parametros:
+    parametro
+  | lista_parametros COMMA parametro
+  ;
+
+/* aceita tanto "tipo nome" quanto "tipo[] nome" (ex.: String[] args do main) */
+parametro:
+    tipo IDENTIFIER
+  | tipo LBRACKET RBRACKET IDENTIFIER
+  ;
+
+bloco:
+    LBRACE lista_instrucoes RBRACE
+  ;
+
+lista_instrucoes:
+    lista_instrucoes instrucao
+  | /* vazio */
+  ;
+
+instrucao:
+    declaracao_variavel
+  | expressao SEMICOLON
+  | RETURN expressao SEMICOLON
+  | RETURN SEMICOLON
+  | bloco /* permite blocos aninhados, como for/if no futuro */
+  ;
+
+/* declaração de variável genérica: aceita qualquer expressão como inicializador,
+   não apenas um literal solto */
+declaracao_variavel:
+    tipo IDENTIFIER ASSIGN expressao SEMICOLON
+        { printf("Variavel '%s' (%s) declarada.\n", $2, $1); }
+  | tipo IDENTIFIER SEMICOLON
+        { printf("Variavel '%s' (%s) declarada sem inicializacao.\n", $2, $1); }
+  ;
+
+/* 4. Expressões: operadores completos + literais tipados + chamadas de método */
 expressao:
     expressao ASSIGN expressao
   | expressao PLUS_ASSIGN expressao
@@ -70,9 +186,26 @@ expressao:
   | expressao INC
   | DEC expressao
   | expressao DEC
-  | MINUS expressao %prec UMINUS  /* Garante que o menos unário (ex: -5) tenha a maior precedência */
+  | MINUS expressao %prec UMINUS
   | LPAREN expressao RPAREN
-  | NUM
+  | IDENTIFIER                              /* variável local */
+  | IDENTIFIER LPAREN argumentos_opt RPAREN /* chamada de metodo */
+  | INT_LITERAL
+  | DOUBLE_LITERAL
+  | STRING_LITERAL
+  | CHAR_LITERAL
+  | BOOLEAN_LITERAL
+  | NULL_LITERAL
+  ;
+
+argumentos_opt:
+    lista_argumentos
+  | /* vazio */
+  ;
+
+lista_argumentos:
+    expressao
+  | lista_argumentos COMMA expressao
   ;
 
 %%
@@ -82,7 +215,6 @@ void yyerror(const char *s) {
 }
 
 int main(void) {
-    // Inicia a análise sintática
     if (yyparse() == 0) {
         printf("Análise concluída com sucesso.\n");
     }
