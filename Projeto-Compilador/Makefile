@@ -4,7 +4,6 @@ LDLIBS = -lfl
 
 LEXER_SRC = lexer/lexer.l
 PARSER_SRC = parser/parser.y
-TEST = tests/testes.sh
 
 LEX_OUT = lex.yy.c
 PARSER_OUT_C = parser.tab.c
@@ -12,7 +11,7 @@ PARSER_OUT_H = parser.tab.h
 
 TARGET = compilador
 
-.PHONY: all run clean
+.PHONY: all run test clean
 
 all: $(TARGET)
 
@@ -29,8 +28,8 @@ run: $(TARGET)
 	./$(TARGET)
 
 test: $(TARGET)
-	chmod +x $(TEST)
-	$(TEST)
+	chmod +x tests/testes.sh
+	cd tests && bash ./testes.sh
 
 clean:
 	rm -f $(LEX_OUT) $(PARSER_OUT_C) $(PARSER_OUT_H) $(TARGET)
