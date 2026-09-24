@@ -1,0 +1,25 @@
+name: Testes do Compilador
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Projeto-Compilador
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar dependências (bison, flex, build tools)
+        run: sudo apt-get update && sudo apt-get install -y bison flex build-essential
+
+      - name: Build + Testes
+        run: make test
