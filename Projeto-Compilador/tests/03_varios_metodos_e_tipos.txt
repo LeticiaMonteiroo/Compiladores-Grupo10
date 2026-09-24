@@ -1,0 +1,13 @@
+public class Calculadora {
+    public static void inicializar() {
+    }
+
+    private int obterValor() {
+    }
+
+    protected double calcularMedia() {
+    }
+
+    static boolean estaPronto() {
+    }
+}
