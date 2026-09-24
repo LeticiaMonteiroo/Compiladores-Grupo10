@@ -1,37 +1,18 @@
 %{
 #include "parser.tab.h"
 #include <stdlib.h>
-#include <stdlib.h>
 #include <string.h>
 %}
 
+%option noyywrap
+%option yylineno
+
 %%
 
-/* Palavras-chave do escopo de métodos e retornos */
-"public"        { return PUBLIC; }
-"private"       { return PRIVATE; }
-"protected"     { return PROTECTED; }
-"static"        { return STATIC; }
-"void"          { return VOID; }
-"int"           { return INT; }
-"return"        { return RETURN; }
-
-/* Identificadores (Nomes de classes, métodos e variáveis) */
-[a-zA-Z_][a-zA-Z0-9_]* { return ID; }
-
-/* Operadores estruturais de métodos e blocos */
-"{"             { return LBRACE; }
-"}"             { return RBRACE; }
-","             { return COMMA; }
-
-/* Regras originais do colega */
-[0-9]+          { yylval = atoi(yytext); return NUM; }
-
-/* Comentarios */
 "//".*                      { /* ignorar comentário de linha */ }
 "/*"([^*]|\*+[^*/])*\*+"/"  { /* ignorar comentário de bloco */ }
 
-/* Palavras-chave de classe */
+  /* Palavras-chave */
 "class"                 { return CLASS; }
 "public"                { return PUBLIC; }
 "private"               { return PRIVATE; }
@@ -40,7 +21,7 @@
 "void"                  { return VOID; }
 "return"                { return RETURN; }
 
-/* Tipos primitivos */
+  /* Tipos */
 "int"                   { return TYPE_INT; }
 "double"                { return TYPE_DOUBLE; }
 "float"                 { return TYPE_FLOAT; }
@@ -51,7 +32,7 @@
 "byte"                  { return TYPE_BYTE; }
 "String"                { return TYPE_STRING; }
 
-/* Literais */
+  /* Literais */
 "true"                  { yylval.boolval = 1; return BOOLEAN_LITERAL; }
 "false"                 { yylval.boolval = 0; return BOOLEAN_LITERAL; }
 "null"                  { return NULL_LITERAL; }
@@ -60,10 +41,10 @@
 \"([^\"\\]|\\.)*\"      { yylval.sval = strdup(yytext); return STRING_LITERAL; }
 \'([^\'\\]|\\.)\'       { yylval.cval = yytext[1]; return CHAR_LITERAL; }
 
-/* Identificadores */
+  /* Identificadores */
 [a-zA-Z_$][a-zA-Z0-9_$]* { yylval.sval = strdup(yytext); return IDENTIFIER; }
 
-/* Operadores aritmeticos */
+  /* Operadores aritméticos */
 "++"            { return INC; }
 "--"            { return DEC; }
 "+"             { return PLUS; }
@@ -72,7 +53,7 @@
 "/"             { return DIVIDE; }
 "%"             { return MOD; }
 
-/* Operadores relacionais */
+  /* Operadores relacionais */
 "=="            { return EQ; }
 "!="            { return NEQ; }
 ">="            { return GTE; }
@@ -80,12 +61,12 @@
 ">"             { return GT; }
 "<"             { return LT; }
 
-/* Operadores logicos */
+  /* Operadores lógicos */
 "&&"            { return AND; }
 "||"            { return OR; }
 "!"             { return NOT; }
 
-/* Operadores de bits */
+  /* Operadores de bits */
 ">>>"           { return URSHIFT; }
 "<<"            { return LSHIFT; }
 ">>"            { return RSHIFT; }
@@ -94,7 +75,7 @@
 "^"             { return BIT_XOR; }
 "~"             { return BIT_NOT; }
 
-/* Operadores de atribuicao */
+  /* Operadores de atribuição */
 "+="            { return PLUS_ASSIGN; }
 "-="            { return MINUS_ASSIGN; }
 "*="            { return TIMES_ASSIGN; }
@@ -102,7 +83,7 @@
 "%="            { return MOD_ASSIGN; }
 "="             { return ASSIGN; }
 
-/* Delimitadores e pontuacao */
+  /* Delimitadores e pontuação */
 "{"             { return LBRACE; }
 "}"             { return RBRACE; }
 "("             { return LPAREN; }
@@ -113,7 +94,7 @@
 ","             { return COMMA; }
 "."             { return DOT; }
 
-[ \t\n]+        { /* ignorar espaços em branco */ }
-.               { printf("Caractere inválido: %s\n", yytext); }
+[ \t\r\n]+      { /* ignorar espaços em branco */ }
+.               { printf("Caractere inválido: %s (linha %d)\n", yytext, yylineno); }
 
 %%
