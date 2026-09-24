@@ -130,6 +130,7 @@ void yyerror(const char *s) {
 int main(void) {
     if (yyparse() == 0) {
         printf("Analise sintatica concluida com sucesso.\n");
+        return 0;
     }
-    return 0;
+    return 1;
 }
