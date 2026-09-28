@@ -18,6 +18,7 @@
     - **Maria Eduarda** — métodos, parâmetros e retorno
     - **Igor** — operadores
     - **Letícia** — laços e operadores
+    - **Guilherme** - comandos + condicionais
 
 ## Sprint 2 — Análise Léxica e Base da Gramática (02/Set – 09/Set)
 

@@ -15,7 +15,7 @@
 - **[Ígor](https://github.com/igorvdaniel):** Criar a estrutura inicial da documentação (MkDocs) e homologar a primeira entrega do ambiente.
 - **[Letícia](https://github.com/LeticiaMonteiroo):** Configurar o repositório, adicionar a equipe.
 - **Definição de escopo (todos):** discutir e delimitar qual subconjunto de Java o compilador vai cobrir nesta entrega, dividindo o levantamento de tokens por área:
-    - **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Comandos + condicionais
+    - **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Comandos + condicionais. 
     - **[Maria Luana](https://github.com/MLuana725):** classe única, `main` e variáveis.
     - **[Maria Eduarda](https://github.com/pyramidsf):** métodos, parâmetros e retorno.
     - **[Ígor](https://github.com/igorvdaniel):** operadores.
