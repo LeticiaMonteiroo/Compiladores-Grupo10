@@ -1,43 +1,58 @@
 # Planejamento do Projeto - Compiladores 1 (Java para C#)
 
+> As tarefas abaixo correspondem aos cards do quadro Kanban da equipe (ver
+> [Metodologia](metodologia.md)). A equipe organizou o trabalho por **área da
+> linguagem** — cada pessoa acompanha seu escopo de tokens do léxico até a
+> integração no parser — em vez de dividir por ferramenta (Flex de um lado,
+> Bison de outro). O resultado efetivo de cada sprint está registrado em
+> [Entrega 1 → O que foi feito](entregas/entrega1.md).
+
 ## Sprint 1: Setup e Definição da Linguagem
+
 **Período:** 26/Ago a 02/Set
 
-* **[Ígor](https://github.com/igorvdaniel):** Escrever o Documento Inicial definindo o escopo reduzido, estruturar o quadro Kanban/Notion da equipe e homologar a primeira entrega do ambiente.
-* **[Letícia](https://github.com/LeticiaMonteiroo):** Configurar o repositório, adicionar a equipe.
-* **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Configurar o ambiente Flex local, criar um `.l` básico (Hello World) e criar o Makefile base.
-* **[Maria Luana]():** Configurar o ambiente Bison, criar o rascunho `.y` e mapear a conexão inicial com o Flex.
-* **[Maria Eduarda](https://github.com/pyramidsf):** Criar os primeiros arquivos de texto (códigos fictícios em Java) que servirão de base para os testes.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Estruturar o projeto (pastas e arquivos base) e configurar o Makefile.
+- **[Ígor](https://github.com/igorvdaniel):** Criar a estrutura inicial da documentação (MkDocs) e homologar a primeira entrega do ambiente.
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Configurar o repositório, adicionar a equipe.
+- **Definição de escopo (todos):** discutir e delimitar qual subconjunto de Java o compilador vai cobrir nesta entrega, dividindo o levantamento de tokens por área:
+    - **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Comandos + condicionais
+    - **[Maria Luana](https://github.com/MLuana725):** classe única, `main` e variáveis.
+    - **[Maria Eduarda](https://github.com/pyramidsf):** métodos, parâmetros e retorno.
+    - **[Ígor](https://github.com/igorvdaniel):** operadores.
+    - **[Letícia](https://github.com/LeticiaMonteiroo):** laços e operadores.
 
 ---
 
 ## Sprint 2: Análise Léxica e Base da Gramática
+
 **Período:** 02/Set a 09/Set
 
-* **[Ígor](https://github.com/igorvdaniel):** Refinar o documento da linguagem listando formalmente os *Tokens*.
-* **[Letícia](https://github.com/LeticiaMonteiroo):** Criar os scripts de automação simples para rodar o analisador léxico contra os códigos de teste.
-* **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Validar se os tokens gerados fazem sentido com as regras da linguagem desenhadas até agora.
-* **[Maria Luana]():** Finalizar as expressões regulares no arquivo `.l` para reconhecer todos os tokens (palavras reservadas, operadores, etc.).
-* **[Maria Eduarda](https://github.com/pyramidsf):** Escrever a Gramática Livre de Contexto (GLC) e iniciar as regras correspondentes no `.y`.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Revisar o `lexer.l`, consolidando as regras trazidas por cada área e removendo redundâncias.
+- **[Maria Luana](https://github.com/MLuana725):** Escrever as regras léxicas do seu escopo (classe, `main`, variáveis) e integrar sua branch, resolvendo conflitos com a `main`.
+- **[Maria Eduarda](https://github.com/pyramidsf):** Escrever as regras léxicas de métodos, parâmetros e retorno.
+- **[Ígor](https://github.com/igorvdaniel): Escrever as regras léxicas de operadores matemáticos e relacionais. 
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Escrever as regras léxicas de laços + operadores lógicos.
+- **Meta da sprint:** fechar o `lexer.l` reconhecendo tipos primitivos, modificadores, palavras reservadas, todos os operadores e comentários — base completa para o parser (ver [Escopo](escopo.md)).
 
 ---
 
 ## Sprint 3: O Parser Sintático e Integração
+
 **Período:** 09/Set a 16/Set
 
-* **[Ígor](https://github.com/igorvdaniel):** Redigir as respostas preliminares do Formulário P1, documentar o status da integração estrutural.
-* **[Letícia](https://github.com/LeticiaMonteiroo):** Auxiliar na integração C/C++ do código Lex/Bison e resolver eventuais bugs de compilação no Makefile.
-* **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Implementar as regras sintáticas funcionais no Bison (ex: validação correta de blocos `if/while`).
-* **[Maria Luana]():** Testar as falhas do Lex, focar na correção de bugs léxicos e validar se espaços/comentários estão sendo ignorados.
-* **[Maria Eduarda](https://github.com/pyramidsf):** Rodar a integração completa (Léxica + Sintática), documentar onde o parser quebra e reportar os erros aos desenvolvedores.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Reescrever a gramática base do `parser.y`, priorizando fechar uma versão estável e sem conflitos de Bison a tempo da entrega — o que levou a uma **redução do escopo sintático** (parâmetros, corpo de método e uso de operadores em expressões ficaram para a próxima sprint; justificativa detalhada em [Escopo](escopo.md)).
+- **[Maria Luana](https://github.com/MLuana725):** Integrar seu trabalho de léxico à nova gramática, resolvendo conflitos de merge entre sua branch e a `main`.
+- **Demais integrantes:** validar se os tokens levantados nas sprints anteriores continuavam compatíveis com a gramática reduzida.
 
 ---
 
-## Sprint 4: Homologação, Preparação P1 e Entrega Final
+## Sprint 4: Homologação, Preparação e Entrega Final
+
 **Período:** 16/Set a 23/Set
 
-* **[Ígor](https://github.com/igorvdaniel):** Realizar o *Code Freeze* em 21/Set, preencher o formulário oficial, fechar os slides, organizar o pacote de arquivos finais e liderar o ensaio da apresentação (5 min).
-* **[Letícia](https://github.com/LeticiaMonteiroo):** Auxiliar Ígor na montagem visual dos slides da Apresentação P1 e revisão final do README do repositório.
-* **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Executar a bateria final de testes homologados e registrar as evidências (prints) de sucesso para os slides.
-* **[Maria Luana]():** Fazer o polimento do tratamento de erros no arquivo `.l` (ex: garantir que ele identifique a linha do erro no código).
-* **[Maria Eduarda](https://github.com/pyramidsf):** Implementar a função `yyerror` no Bison para gerar mensagens de erro sintático claras ao usuário.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Criar a suíte de testes e configurar o workflow de CI para rodar os testes automaticamente.
+- **[Maria Luana](https://github.com/MLuana725):** Auxiliar no preenchimento do formulário da primeira entrega. 
+- **[Maria Eduarda](https://github.com/pyramidsf):** Escrever a documentação da entrega.
+- **[Ígor](https://github.com/igorvdaniel):** Revisar e complementar a documentação, além de participar do preenchimento do formulário da Entrega 1.
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Montar os slides da apresentação da primeira entrega.
+
