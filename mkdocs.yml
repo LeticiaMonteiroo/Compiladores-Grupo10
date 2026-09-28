@@ -24,6 +24,10 @@ nav:
   - Home: index.md
   - Decisões: decisoes.md
   - Planejamento: planejamento.md
+  - Metodologia: metodologia.md
+  - Escopo: escopo.md
+  - Entregas:
+      - Entrega 1: entregas/entrega1.md
 
 theme:
   name: material
