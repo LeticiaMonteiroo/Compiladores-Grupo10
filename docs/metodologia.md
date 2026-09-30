@@ -23,9 +23,6 @@ com responsável e, quando aplicável, o link da issue/PR correspondente.
 
 ## Papéis por sprint
 As tarefas são atribuidas de forma dinâmica, variando qual papel qual integrante vai assumir em cada sprint. 
-> Descrever aqui, em uma frase, como as tarefas são distribuídas — por
-> exemplo, se há um responsável fixo por Flex, outro por Bison, etc. (dá pra
-> puxar isso direto do que já está no Planejamento).
 
 
 
