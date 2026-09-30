@@ -32,7 +32,7 @@
 - **[Maria Eduarda](https://github.com/pyramidsf):** Escrever as regras léxicas de métodos, parâmetros e retorno.
 - **[Ígor](https://github.com/igorvdaniel): Escrever as regras léxicas de operadores matemáticos e relacionais. 
 - **[Letícia](https://github.com/LeticiaMonteiroo):** Escrever as regras léxicas de laços + operadores lógicos.
-- **Meta da sprint:** fechar o `lexer.l` reconhecendo tipos primitivos, modificadores, palavras reservadas, todos os operadores e comentários — base completa para o parser (ver [Escopo](escopo.md)).
+- **Meta da sprint:** fechar o `lexer.l` reconhecendo tipos primitivos, modificadores, palavras reservadas, todos os operadores e comentários — base completa para o parser (ver [Escopo](compiladordetalhes/escopo.md)).
 
 ---
 
@@ -40,7 +40,7 @@
 
 **Período:** 09/Set a 16/Set
 
-- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Reescrever a gramática base do `parser.y`, priorizando fechar uma versão estável e sem conflitos de Bison a tempo da entrega — o que levou a uma **redução do escopo sintático** (parâmetros, corpo de método e uso de operadores em expressões ficaram para a próxima sprint; justificativa detalhada em [Escopo](escopo.md)).
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Reescrever a gramática base do `parser.y`, priorizando fechar uma versão estável e sem conflitos de Bison a tempo da entrega — o que levou a uma **redução do escopo sintático** (parâmetros, corpo de método e uso de operadores em expressões ficaram para a próxima sprint; justificativa detalhada em [Escopo](compiladordetalhes/escopo.md)).
 - **[Maria Luana](https://github.com/MLuana725):** Integrar seu trabalho de léxico à nova gramática, resolvendo conflitos de merge entre sua branch e a `main`.
 - **Demais integrantes:** validar se os tokens levantados nas sprints anteriores continuavam compatíveis com a gramática reduzida.
 
