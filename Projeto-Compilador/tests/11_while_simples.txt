@@ -1,0 +1,6 @@
+class Teste {
+    public static void main() {
+        while (x < 10) {
+        }
+    }
+}
