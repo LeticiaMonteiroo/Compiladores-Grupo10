@@ -153,6 +153,8 @@ lista_comandos
 
 comando
     : comando_while
+    | comando_reatribuicao
+    | comando_incremento_decremento
     ;
 
 
@@ -162,6 +164,68 @@ comando_while
     : WHILE LPAREN expressao RPAREN LBRACE lista_comandos RBRACE
         {
             printf("While reconhecido\n");
+        }
+    ;
+
+
+/* REATRIBUIÇÃO DE VARIÁVEIS */
+
+comando_reatribuicao
+    : IDENTIFIER ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao simples '=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    | IDENTIFIER PLUS_ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao composta '+=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    | IDENTIFIER MINUS_ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao composta '-=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    | IDENTIFIER TIMES_ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao composta '*=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    | IDENTIFIER DIVIDE_ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao composta '/=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    | IDENTIFIER MOD_ASSIGN expressao SEMICOLON
+        {
+            printf("Reatribuicao composta '%%=' em '%s' reconhecida\n", $1);
+            free($1);
+        }
+    ;
+
+
+/* INCREMENTO E DECREMENTO (COMO COMANDOS) */
+
+comando_incremento_decremento
+    : IDENTIFIER INC SEMICOLON
+        {
+            printf("Comando pos-incremento '++' em '%s' reconhecido\n", $1);
+            free($1);
+        }
+    | IDENTIFIER DEC SEMICOLON
+        {
+            printf("Comando pos-decremento '--' em '%s' reconhecido\n", $1);
+            free($1);
+        }
+    | INC IDENTIFIER SEMICOLON
+        {
+            printf("Comando pre-incremento '++' em '%s' reconhecido\n", $2);
+            free($2);
+        }
+    | DEC IDENTIFIER SEMICOLON
+        {
+            printf("Comando pre-decremento '--' em '%s' reconhecido\n", $2);
+            free($2);
         }
     ;
 
@@ -257,9 +321,29 @@ termo
     ;
 
 
-/* sinal unário (+x, -x) */
+/* sinal unário (+x, -x), incremento e decremento */
 fator
-    : MINUS fator
+    : INC IDENTIFIER
+        {
+            printf("Expressao: pre-incremento '++' em '%s'\n", $2);
+            free($2);
+        }
+    | DEC IDENTIFIER
+        {
+            printf("Expressao: pre-decremento '--' em '%s'\n", $2);
+            free($2);
+        }
+    | IDENTIFIER INC
+        {
+            printf("Expressao: pos-incremento '++' em '%s'\n", $1);
+            free($1);
+        }
+    | IDENTIFIER DEC
+        {
+            printf("Expressao: pos-decremento '--' em '%s'\n", $1);
+            free($1);
+        }
+    | MINUS fator
         {
             printf("Operador aritmetico unario - reconhecido\n");
         }

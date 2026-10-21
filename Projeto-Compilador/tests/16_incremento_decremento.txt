@@ -1,0 +1,13 @@
+public class TesteIncDec {
+    public static void main() {
+        i++;
+        i--;
+        ++i;
+        --i;
+        while (i++ < 10) {
+            ++x;
+            y = --z;
+            w = k++;
+        }
+    }
+}
