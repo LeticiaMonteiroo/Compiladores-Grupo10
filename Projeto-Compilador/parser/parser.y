@@ -75,9 +75,7 @@ extern int yylineno;
 %%
 
 
-/* =========================================================
-   REGRA RAIZ
-   ========================================================= */
+/* REGRA RAIZ */
 
 programa
     : modificador_classe_opt CLASS IDENTIFIER LBRACE lista_membros RBRACE
@@ -94,9 +92,7 @@ modificador_classe_opt
     ;
 
 
-/* =========================================================
-   LISTA DE MEMBROS
-   ========================================================= */
+/* LISTA DE MEMBROS */
 
 lista_membros
     :
@@ -109,9 +105,7 @@ membro
     ;
 
 
-/* =========================================================
-   MÉTODOS
-   ========================================================= */
+/* MÉTODOS */
 
 membro_metodo
     : modificadores_membro tipo_retorno IDENTIFIER
@@ -149,9 +143,7 @@ tipo_retorno
     ;
 
 
-/* =========================================================
-   COMANDOS
-   ========================================================= */
+/* COMANDOS */
 
 lista_comandos
     :
@@ -164,9 +156,7 @@ comando
     ;
 
 
-/* =========================================================
-   WHILE
-   ========================================================= */
+/* WHILE */
 
 comando_while
     : WHILE LPAREN expressao RPAREN LBRACE lista_comandos RBRACE
@@ -176,9 +166,7 @@ comando_while
     ;
 
 
-/* =========================================================
-   EXPRESSÕES
-   ========================================================= */
+/* EXPRESSÕES */
 
 expressao
     : expressao OR expressao_and
@@ -208,32 +196,80 @@ expressao_not
 
 
 expressao_relacional
-    : operando EQ operando
+    : expressao_aritmetica EQ expressao_aritmetica
         {
             printf("Operador relacional == reconhecido\n");
         }
-    | operando NEQ operando
+    | expressao_aritmetica NEQ expressao_aritmetica
         {
             printf("Operador relacional != reconhecido\n");
         }
-    | operando GTE operando
+    | expressao_aritmetica GTE expressao_aritmetica
         {
             printf("Operador relacional >= reconhecido\n");
         }
-    | operando LTE operando
+    | expressao_aritmetica LTE expressao_aritmetica
         {
             printf("Operador relacional <= reconhecido\n");
         }
-    | operando GT operando
+    | expressao_aritmetica GT expressao_aritmetica
         {
             printf("Operador relacional > reconhecido\n");
         }
-    | operando LT operando
+    | expressao_aritmetica LT expressao_aritmetica
         {
             printf("Operador relacional < reconhecido\n");
         }
+    | expressao_aritmetica
+    ;
+
+/* EXPRESSÕES ARITMÉTICAS */
+
+/* + e - */
+expressao_aritmetica
+    : expressao_aritmetica PLUS termo
+        {
+            printf("Operador aritmetico + reconhecido\n");
+        }
+    | expressao_aritmetica MINUS termo
+        {
+            printf("Operador aritmetico - reconhecido\n");
+        }
+    | termo
+    ;
+
+
+/* *, / e % */
+termo
+    : termo TIMES fator
+        {
+            printf("Operador aritmetico * reconhecido\n");
+        }
+    | termo DIVIDE fator
+        {
+            printf("Operador aritmetico / reconhecido\n");
+        }
+    | termo MOD fator
+        {
+            printf("Operador aritmetico %% reconhecido\n");
+        }
+    | fator
+    ;
+
+
+/* sinal unário (+x, -x) */
+fator
+    : MINUS fator
+        {
+            printf("Operador aritmetico unario - reconhecido\n");
+        }
+    | PLUS fator
+        {
+            printf("Operador aritmetico unario + reconhecido\n");
+        }
     | operando
     ;
+
 
 
 operando
