@@ -85,6 +85,21 @@ programa
         }
     ;
 
+/* Variaveis */
+
+tipo
+    :TYPE_INT
+    | TYPE_DOUBLE
+    | TYPE_FLOAT
+    | TYPE_BOOLEAN
+    | TYPE_CHAR
+    | TYPE_LONG
+    | TYPE_SHORT
+    | TYPE_BYTE
+    | TYPE_STRING
+    ;
+ 
+
 
 modificador_classe_opt
     : PUBLIC
@@ -131,15 +146,7 @@ modificadores_membro
 
 tipo_retorno
     : VOID
-    | TYPE_INT
-    | TYPE_DOUBLE
-    | TYPE_FLOAT
-    | TYPE_BOOLEAN
-    | TYPE_CHAR
-    | TYPE_LONG
-    | TYPE_SHORT
-    | TYPE_BYTE
-    | TYPE_STRING
+    | tipo
     ;
 
 
@@ -150,11 +157,24 @@ lista_comandos
     | lista_comandos comando
     ;
 
+comando_declaracao
+: tipo IDENTIFIER SEMICOLON
+        {
+            printf("Declaracao de variavel simples '%s' reconhecida\n", $2);
+            free($2);
+        }
+    | tipo IDENTIFIER ASSIGN expressao SEMICOLON
+        {
+            printf("Declaracao de variavel '%s' com inicializacao reconhecida\n", $2);
+            free($2);
+        }
+    ;
 
 comando
     : comando_while
     | comando_reatribuicao
     | comando_incremento_decremento
+    | comando_declaracao
     ;
 
 

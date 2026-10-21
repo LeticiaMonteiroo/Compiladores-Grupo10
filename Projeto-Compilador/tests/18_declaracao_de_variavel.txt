@@ -1,0 +1,8 @@
+public class TesteDeclaracaoVariavel {
+    public static void main() {
+        int contador;
+        double valor = 10.5;
+        String nome = "Teste";
+
+        }
+    }
