@@ -35,3 +35,7 @@ bin/
 # Sistema operacional
 .DS_Store
 Thumbs.db
+
+# Binarios dos testes unitarios
+test_ast
+test_tabela_simbolos
