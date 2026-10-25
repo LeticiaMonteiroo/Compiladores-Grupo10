@@ -25,9 +25,12 @@ nav:
   - Decisões: decisoes.md
   - Planejamento: planejamento.md
   - Metodologia: metodologia.md
-  - Escopo: escopo.md
+  - O Compilador: 
+    - Escopo: compiladordetalhes/escopo.md
+    - Como executar: compiladordetalhes/como-executar.md
   - Entregas:
       - Entrega 1: entregas/entrega1.md
+      - Entrega 2: entregas/entrega2.md
 
 theme:
   name: material

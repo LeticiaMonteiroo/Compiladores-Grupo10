@@ -1,0 +1,6 @@
+public class Teste {
+    public static void main() {
+        while (a + b * 2 > (c - 1) / 3 % 2 && !flag) {
+        }
+    }
+}

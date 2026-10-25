@@ -2,7 +2,7 @@
 
 > Cobre as Sprints 1 a 4 (26/Ago a 23/Set). O planejado por sprint está em
 > [Planejamento](../planejamento.md); o detalhamento do escopo realmente
-> implementado está em [Escopo](../escopo.md). Esta página é o meio-termo
+> implementado está em [Escopo](../compiladordetalhes/escopo.md). Esta página é o meio-termo
 > entre os dois: conta o que a equipe efetivamente fez, sprint a sprint.
 
 ## Sprint 1 — Setup e Definição da Linguagem (26/Ago – 02/Set)
@@ -32,7 +32,7 @@
   base léxica que hoje reconhece: tipos primitivos, modificadores,
   `return` como palavra reservada, todos os operadores aritméticos,
   relacionais, lógicos, de atribuição e de bits, e comentários de linha/bloco
-  (ver tabela completa em [Escopo](../escopo.md)).
+  (ver tabela completa em [Escopo](../compiladordetalhes/escopo.md)).
 
 ## Sprint 3 — Parser Sintático e Integração (09/Set – 16/Set)
 
@@ -46,7 +46,7 @@
   método, corpo de método com instruções, `return` dentro de uma produção, e
   o uso de operadores em expressões binárias/unárias. Isso está documentado
   em detalhe, com a justificativa, em
-  [Escopo → Fora do escopo desta entrega](../escopo.md#fora-do-escopo-desta-entrega).
+  [Escopo → Fora do escopo desta entrega](../compiladordetalhes/escopo.md#fora-do-escopo-da-primeira-entrega).
 - O que ficou de pé e funcional: declaração de método com modificadores
   (`public`/`private`/`protected`/`static`), tipo de retorno e nome —
   aceitando `nome()` com corpo `{}` vazio.
@@ -73,7 +73,7 @@
 | Operadores                        | Todos reconhecidos no léxico, sem uso na gramática |
 | Comentários                       | Implementado                                     |
 
-Detalhamento completo, com o que ficou de fora e por quê, em [Escopo](../escopo.md).
+Detalhamento completo, com o que ficou de fora e por quê, em [Escopo](../compiladordetalhes/escopo.md).
 
 ## Artefatos no repositório
 

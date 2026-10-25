@@ -2,8 +2,8 @@
 
 > Esta página reúne as escolhas técnicas e organizacionais do grupo e a
 > justificativa por trás delas. O que foi de fato implementado está em
-> [Escopo](escopo.md); como isso se distribuiu nas sprints está em
-> [Planejamento](planejamento.md) e [Entrega 1](entrega1/resumo.md).
+> [Escopo](compiladordetalhes/escopo.md); como isso se distribuiu nas sprints está em
+> [Planejamento](planejamento.md) e [Entrega 1](entregas/entrega1.md).
 
 ## Linguagens e ferramentas
 
@@ -13,7 +13,7 @@ O compilador traduz um subconjunto de **Java** para **C#**, construído com **Fl
 
 O projeto não contempla os pilares de OO de Java: sem herança, interfaces, polimorfismo, construtores ou atributos de instância, e sem suporte a múltiplas classes por arquivo. Uma "classe", no escopo atual, é tratada como um **invólucro sintático único** para agrupar métodos estáticos — no espírito de uma classe utilitária, não de um objeto propriamente dito. O modificador `public` da classe é opcional.
 
-Essa foi uma escolha consciente para viabilizar uma base sólida de análise léxica e sintática (tipos, modificadores e assinatura de método) dentro do prazo da primeira entrega, deixando expressões, corpo de método, parâmetros e controle de fluxo para as próximas sprints — não é uma lacuna por esquecimento (ver detalhes em [Escopo → Fora do escopo desta entrega](escopo.md#fora-do-escopo-desta-entrega)).
+Essa foi uma escolha consciente para viabilizar uma base sólida de análise léxica e sintática (tipos, modificadores e assinatura de método) dentro do prazo da primeira entrega, deixando expressões, corpo de método, parâmetros e controle de fluxo para as próximas sprints — não é uma lacuna por esquecimento (ver detalhes em [Escopo → Fora do escopo desta entrega](compiladordetalhes/escopo.md#fora-do-escopo-da-primeira-entrega)).
 
 ## Divisão do trabalho por área de escopo da linguagem
 

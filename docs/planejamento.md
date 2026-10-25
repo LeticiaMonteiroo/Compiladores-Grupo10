@@ -5,7 +5,7 @@
 > linguagem** — cada pessoa acompanha seu escopo de tokens do léxico até a
 > integração no parser — em vez de dividir por ferramenta (Flex de um lado,
 > Bison de outro). O resultado efetivo de cada sprint está registrado em
-> [Entrega 1 → O que foi feito](entregas/entrega1.md).
+> [Entrega 1 → O que foi feito](entregas/entrega1.md) para as Sprints 1 a 4.
 
 ## Sprint 1: Setup e Definição da Linguagem
 
@@ -32,7 +32,7 @@
 - **[Maria Eduarda](https://github.com/pyramidsf):** Escrever as regras léxicas de métodos, parâmetros e retorno.
 - **[Ígor](https://github.com/igorvdaniel): Escrever as regras léxicas de operadores matemáticos e relacionais. 
 - **[Letícia](https://github.com/LeticiaMonteiroo):** Escrever as regras léxicas de laços + operadores lógicos.
-- **Meta da sprint:** fechar o `lexer.l` reconhecendo tipos primitivos, modificadores, palavras reservadas, todos os operadores e comentários — base completa para o parser (ver [Escopo](escopo.md)).
+- **Meta da sprint:** fechar o `lexer.l` reconhecendo tipos primitivos, modificadores, palavras reservadas, todos os operadores e comentários — base completa para o parser (ver [Escopo](compiladordetalhes/escopo.md)).
 
 ---
 
@@ -40,7 +40,7 @@
 
 **Período:** 09/Set a 16/Set
 
-- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Reescrever a gramática base do `parser.y`, priorizando fechar uma versão estável e sem conflitos de Bison a tempo da entrega — o que levou a uma **redução do escopo sintático** (parâmetros, corpo de método e uso de operadores em expressões ficaram para a próxima sprint; justificativa detalhada em [Escopo](escopo.md)).
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Reescrever a gramática base do `parser.y`, priorizando fechar uma versão estável e sem conflitos de Bison a tempo da entrega — o que levou a uma **redução do escopo sintático** (parâmetros, corpo de método e uso de operadores em expressões ficaram para a próxima sprint; justificativa detalhada em [Escopo](compiladordetalhes/escopo.md)).
 - **[Maria Luana](https://github.com/MLuana725):** Integrar seu trabalho de léxico à nova gramática, resolvendo conflitos de merge entre sua branch e a `main`.
 - **Demais integrantes:** validar se os tokens levantados nas sprints anteriores continuavam compatíveis com a gramática reduzida.
 
@@ -56,3 +56,16 @@
 - **[Ígor](https://github.com/igorvdaniel):** Revisar e complementar a documentação, além de participar do preenchimento do formulário da Entrega 1.
 - **[Letícia](https://github.com/LeticiaMonteiroo):** Montar os slides da apresentação da primeira entrega.
 
+---
+
+## Sprint 5: Evolução do Parser e Estrutura do Compilador
+
+**Período:** 23/Set a 22/Out
+
+Esta sprint teve duração maior que as anteriores e foi concluída em 22/Out.
+
+- **[Maria Luana](https://github.com/MLuana725):** Inserir operações aritméticas e regras de precedência no parser.
+- **[Maria Eduarda](https://github.com/pyramidsf):** Adicionar ao parser reatribuições de valores de variáveis e operações de incremento e decremento.
+- **[Ígor](https://github.com/igorvdaniel):** Adicionar declaração de variável ao parser.
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Iniciar a criação de mais testes.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Iniciar a estrutura interna do compilador, incluindo árvore sintática e tabela de símbolos.

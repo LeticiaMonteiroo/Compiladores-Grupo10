@@ -2,8 +2,7 @@
 
 ## Kanban
 
-A equipe organiza o trabalho em um quadro Kanban no [Notion/GitHub Projects
-— link aqui], com cinco colunas:
+A equipe organiza o trabalho em um quadro Kanban no GitHub Projects, com cinco colunas:
 
 - **Backlog**
 - **In Progress**

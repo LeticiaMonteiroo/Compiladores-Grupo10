@@ -2,7 +2,7 @@
 
 > Este documento lista o que o compilador reconhece e traduz nesta entrega.
 > Decisões sobre *por que* reduzimos o escopo estão em
-> [Decisões de Projeto](decisoes.md).
+> [Decisões de Projeto](../decisoes.md).
 
 | Área                     | Implementado                                                                 |
 | ------------------------ | ----------------------------------------------------------------------------|
@@ -18,7 +18,7 @@
 | Expressões               | Apenas literal isolado ou identificador isolado (regra `expressao`); essa regra ainda não é referenciada por nenhuma outra parte da gramática |
 | Comentários              | Linha (`//`) e bloco (`/* */`), ignorados pelo léxico                        |
 
-## Fora do escopo desta entrega
+## Fora do escopo da primeira entrega
 
 - **Orientação a objetos**: o projeto não engloba OO — sem herança, interfaces,
   polimorfismo, construtores, atributos de instância ou múltiplas classes por
