@@ -1,51 +1,67 @@
 # Escopo da Linguagem (Java → C#)
 
-> Este documento lista o que o compilador reconhece e traduz nesta entrega.
-> Decisões sobre *por que* reduzimos o escopo estão em
-> [Decisões de Projeto](../decisoes.md).
+> Este documento descreve o subconjunto que o analisador reconhece atualmente.
+> O projeto ainda não traduz o programa de Java para C#; ele realiza análise
+> léxica e sintática e exibe estruturas internas. As decisões sobre o escopo
+> estão em [Decisões de Projeto](../decisoes.md).
 
-| Área                     | Implementado                                                                 |
-| ------------------------ | ----------------------------------------------------------------------------|
-| Tipos primitivos         | `int`, `double`, `float`, `boolean`, `char`, `long`, `short`, `byte`, `String`, `void` |
-| Modificadores de classe  | `public` (opcional); classe única por arquivo                               |
-| Modificadores de método  | `public`, `private`, `protected`, `static` (nesta ordem: acesso antes de `static`) |
-| Métodos                  | Declaração com modificadores, tipo de retorno e nome                        |
-| Parâmetros               | **Não implementado.** A gramática só aceita `()` vazio (ver "Fora do escopo") |
-| Corpo do método          | **Não implementado.** Só aceita `{}` vazio — nenhuma instrução dentro       |
-| Retorno                  | **Não implementado na gramática.** `return` é reconhecido pelo léxico, mas não há produção que o utilize |
-| Operadores (léxico)      | Todos reconhecidos pelo scanner: aritméticos (`+ - * / %`), incremento/decremento (`++ --`), relacionais (`== != > < >= <=`), lógicos (`&& \|\| !`), atribuição (`= += -= *= /= %=`), bits (`>> << >>> & \| ^ ~`) |
-| Operadores (sintaxe)     | **Não implementados.** Nenhum operador é usado em produções do parser — não há expressões binárias/unárias na gramática atual |
-| Expressões               | Apenas literal isolado ou identificador isolado (regra `expressao`); essa regra ainda não é referenciada por nenhuma outra parte da gramática |
-| Comentários              | Linha (`//`) e bloco (`/* */`), ignorados pelo léxico                        |
+| Área | Implementado |
+| ---- | ------------ |
+| Tipos | `int`, `double`, `float`, `boolean`, `char`, `long`, `short`, `byte`, `String` e `void` como tipo de retorno |
+| Classe | Uma classe por programa; modificador `public` opcional |
+| Métodos | Métodos com tipo de retorno e um modificador de acesso (`public`, `private` ou `protected`), com `static` opcional, ou somente `static` |
+| Parâmetros | **Não implementados.** A lista de parâmetros deve ser vazia: `()` |
+| Declarações locais | Variáveis dos tipos listados, com ou sem inicialização |
+| Atribuições | Atribuição simples (`=`) e composta (`+=`, `-=`, `*=`, `/=`, `%=`) |
+| Incremento/decremento | Formas prefixas e pós-fixas (`++` e `--`), como comandos ou fatores de expressão |
+| Laços | `while` com condição e bloco |
+| Expressões | Literais, identificadores, parênteses, operadores aritméticos, relacionais e lógicos |
+| Comentários | Comentários de linha (`//`) e de bloco (`/* ... */`), ignorados pelo lexer |
+| AST | Árvore sintática abstrata construída durante o parsing e impressa ao final |
+| Tabela de símbolos | Registra classe, métodos e variáveis; é impressa ao final |
 
-## Fora do escopo da primeira entrega
+## Operadores aceitos na sintaxe
 
-- **Orientação a objetos**: o projeto não engloba OO — sem herança, interfaces,
-  polimorfismo, construtores, atributos de instância ou múltiplas classes por
-  arquivo. Uma "classe" aqui é apenas um invólucro sintático para agrupar
-  métodos estáticos, no espírito de uma classe utilitária.
-- **Parâmetros de método**: a gramática ainda não define uma lista de
-  parâmetros; `nome(tipo a, tipo b)` não é aceito, só `nome()`.
-- **Corpo de método**: nenhuma instrução é aceita dentro de `{ }` — nem
-  declaração de variável, nem atribuição, nem chamada de método, nem `return`.
-  O corpo precisa ficar vazio.
-- **Expressões compostas**: embora o léxico já reconheça todos os operadores,
-  a gramática ainda não tem regras de precedência/associatividade para montar
-  expressões binárias ou unárias a partir deles.
-- **Estruturas de controle**: `if/else`, `for`, `while`, `do-while`, `switch`.
-- **Arrays** e **declaração/uso de variáveis** dentro de métodos.
-- **Tipos compostos**: classes definidas pelo usuário (além do wrapper acima),
-  enums, generics.
+- **Aritméticos binários:** `+`, `-`, `*`, `/`, `%`, com precedência usual
+  entre adição/subtração e multiplicação/divisão/resto.
+- **Aritméticos unários:** `+` e `-`.
+- **Relacionais:** `==`, `!=`, `>`, `<`, `>=`, `<=`.
+- **Lógicos:** `&&`, `||` e `!`.
+- **Incremento e decremento:** `++` e `--`, prefixos ou pós-fixos.
+- **Atribuição:** `=`, `+=`, `-=`, `*=`, `/=`, `%=` como comandos.
 
-Isso foi uma escolha consciente para fechar a primeira entrega com uma base
-sólida de análise léxica/sintática (tipos, modificadores e assinatura de
-método), deixando expressões, corpo de método e controle de fluxo para a
-próxima etapa — não é esquecimento.
+O lexer também reconhece operadores bit a bit (`>>`, `<<`, `>>>`, `&`, `|`,
+`^`, `~`), mas eles **não são aceitos nas produções da gramática**.
+
+## Limitações atuais
+
+- **Tradução para C#:** o programa ainda não gera código C# nem executa o
+  programa analisado.
+- **Parâmetros e chamadas de método:** métodos aceitam somente `()` vazio;
+  chamadas não fazem parte da gramática.
+- **Retorno de métodos:** `return` é reconhecido pelo lexer, mas ainda não há
+  produção sintática para ele.
+- **Outras estruturas de controle:** `if/else`, `for`, `do-while` e `switch`.
+- **Expressões e comandos adicionais:** arrays, acesso a membros, chamadas,
+  operadores bit a bit e atribuições dentro de expressões.
+- **Orientação a objetos completa:** herança, interfaces, polimorfismo,
+  construtores, atributos e múltiplas classes por arquivo.
+- **Análise semântica:** não há verificação de tipos, escopo de variáveis ou
+  uso de identificadores. A tabela atual é uma estrutura de registro, não uma
+  validação semântica completa.
 
 ## Exemplo de código aceito
 
 ```java
-public static int soma() {
+public class Exemplo {
+    public static void main() {
+        int contador = 3;
+        while (contador > 0) {
+            contador -= 1;
+        }
+    }
 }
 ```
 
+O parser reconhece o exemplo, constrói a AST e a tabela de símbolos e imprime
+ambas. Isso não significa que o código seja traduzido ou executado.

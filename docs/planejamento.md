@@ -5,7 +5,9 @@
 > linguagem** — cada pessoa acompanha seu escopo de tokens do léxico até a
 > integração no parser — em vez de dividir por ferramenta (Flex de um lado,
 > Bison de outro). O resultado efetivo de cada sprint está registrado em
-> [Entrega 1 → O que foi feito](entregas/entrega1.md) para as Sprints 1 a 4.
+> [Entrega 1 → O que foi feito](entregas/entrega1.md) para as Sprints 1 a 4 e
+> em [Entrega 2 → O que foi feito](entregas/entrega2.md) para as Sprints 5 e 6,
+> que também registra o planejamento da Sprint 7.
 
 ## Sprint 1: Setup e Definição da Linguagem
 
@@ -69,3 +71,25 @@ Esta sprint teve duração maior que as anteriores e foi concluída em 22/Out.
 - **[Ígor](https://github.com/igorvdaniel):** Adicionar declaração de variável ao parser.
 - **[Letícia](https://github.com/LeticiaMonteiroo):** Iniciar a criação de mais testes.
 - **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Iniciar a estrutura interna do compilador, incluindo árvore sintática e tabela de símbolos.
+
+---
+
+## Sprint 6: AST, Tabela de Símbolos e Evolução do Parser
+
+**Período:** 23/Out a 31/Out
+
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024) e [Maria Eduarda](https://github.com/pyramidsf):** Implementar a AST para representar classes, métodos, declarações, laços, atribuições, expressões e literais, e integrá-la ao parser.
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024) e [Ígor](https://github.com/igorvdaniel):** Implementar a tabela de símbolos para registrar classes, métodos e variáveis.
+- **[Maria Luana](https://github.com/MLuana725):** Ampliar a gramática para reconhecer laços `while`, expressões aritméticas, relacionais e lógicas e inicialização de variáveis.
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Ampliar a suíte com casos de comentários de linha e bloco, AST e tabela de símbolos, incluindo testes unitários executados pelo alvo `make test`.
+
+---
+
+## Sprint 7: Preparação da Entrega 2
+
+**Período:** 1/Nov a 9/Nov
+
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Implementar novos casos de teste para ampliar a cobertura do compilador.
+- **[Maria Eduarda](https://github.com/pyramidsf):** Confeccionar e revisar a documentação da Entrega 2.
+- **Todos:** Confeccionar o formulário da Entrega 2.
+- **Todos:** Preparar os slides da apresentação da Entrega 2.

@@ -1,9 +1,9 @@
 # Entrega 2 — O que foi feito
 
-> Esta página registra o trabalho realizado para a Entrega 2, sprint a sprint.
-> Por enquanto, cobre a Sprint 5. O planejamento está em
-> [Planejamento](../planejamento.md); o escopo implementado será detalhado
-> conforme a entrega evoluir.
+> Esta página registra o trabalho realizado nas Sprints 5, 6 e 7
+> para a Entrega 2. O planejamento está em
+> [Planejamento](../planejamento.md); o escopo atualmente reconhecido está em
+> [Escopo](../compiladordetalhes/escopo.md).
 
 ## Sprint 5 — Evolução do Parser e Estrutura do Compilador (23/Set – 22/Out)
 
@@ -41,8 +41,42 @@ interna do compilador.
 | Testes     | `Projeto-Compilador/tests/`              |
 | Docs       | `docs/` (este site)                      |
 
+## Sprint 6 — AST, Tabela de Símbolos e Evolução do Parser (23/Out - 31/Out)
+
+Nesta sprint, o compilador avançou além do reconhecimento sintático e passou a
+construir e exibir estruturas internas durante uma análise bem-sucedida.
+
+- **Guilherme e Maria Eduarda:** Implementar a AST para representar classes, métodos,
+  declarações, laços, atribuições, expressões e literais, e integrá-la ao
+  parser para exibição após uma análise bem-sucedida.
+- **Guilherme e Igor:** Implementar a tabela de símbolos para registrar classes,
+  métodos e variáveis, com impressão ao final da análise. A tabela ainda não
+  realiza uma análise semântica completa.
+- **Maria Luana:** Ampliar a gramática para reconhecer laços `while`,
+  expressões aritméticas, relacionais e lógicas e inicialização de variáveis.
+- **Letícia:** Ampliar a suíte com casos de comentários de linha e bloco,
+  AST e tabela de símbolos, incluindo testes unitários para essas estruturas
+  e sua execução pelo alvo `make test`.
+
+O programa continua sendo um analisador: ainda não gera código C# nem executa
+os programas analisados. Os detalhes e limites atuais estão em
+[Escopo](../compiladordetalhes/escopo.md).
+
+## Sprint 7 — Preparação da Entrega 2 (1/Nov - 9/Nov)
+
+Esta sprint reúne as atividades de implementação e preparação dos materiais
+para a Entrega 2.
+
+- **Letícia:** Implementar novos casos de teste para ampliar a cobertura
+  do compilador.
+- **Maria Eduarda:** Confeccionar e revisar a documentação da Entrega 2.
+- **Todos:** Confeccionar o formulário da Entrega 2.
+- **Todos:** Preparar os slides da apresentação da Entrega 2.
+
 ## Histórico de Versões
 
 | Versão | Descrição                                      | Autor         | Data  |
 | ------ | ---------------------------------------------- | ------------- | ----- |
 | 1.0    | Criação da página com o resumo da Entrega 2    | Maria Eduarda | 22/10 |
+| 1.1    | Registro das atividades da Sprint 6            | Maria Eduarda | 25/10 |
+| 1.2    | Registro das atividades da Sprint 7            | Maria Eduarda | 9/11  |

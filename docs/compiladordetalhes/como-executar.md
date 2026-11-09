@@ -7,6 +7,7 @@ As instruções abaixo descrevem o estado atual do compilador, que faz análise 
 - `make`
 - Um compilador C disponível como `gcc`
 - Flex (`flex`)
+- A biblioteca de execução do Flex (`libfl`), usada na linkagem
 - Bison (`bison`)
 
 Para conferir se as ferramentas estão instaladas, execute `make --version`,
@@ -31,7 +32,7 @@ executável `compilador`.
 
 ## Executar o compilador
 
-Para iniciar o parser e digitar um programa pela entrada padrão:
+Para iniciar a análise e digitar um programa pela entrada padrão:
 
 ```sh
 make run
@@ -52,7 +53,9 @@ Também é possível fornecer um arquivo como entrada, sem iniciar o modo de dig
 ./compilador < tests/02_metodo_simples.txt
 ```
 
-O programa analisa o código e informa o resultado da análise sintática; ele não é um interpretador nem um compilador Java completo.
+Quando a análise sintática é bem sucedida, o programa exibe a árvore
+sintática abstrata (AST) e a tabela de símbolos. Ele ainda não traduz o código
+para C# nem executa o programa de entrada.
 
 ## Testar de forma automatizada
 
@@ -62,13 +65,18 @@ Execute:
 make test
 ```
 
-O alvo compila o executável, se necessário, e roda `tests/testes.sh` para todos os arquivos `.txt` da pasta de testes.
+O alvo compila o executável e os testes unitários de AST e tabela de símbolos,
+executa esses testes e roda `tests/testes.sh` para os arquivos `.txt` da pasta
+de testes.
 
 ### O que o script verifica
 
 - Arquivos cujo nome contém `ERRO` devem ser rejeitados pelo compilador, com
   código de saída diferente de zero.
 - Os demais arquivos devem ser aceitos, com código de saída zero.
+- Os testes unitários verificam criação, composição, liberação e impressão da
+  AST, além de inserção, busca, rejeição de nomes duplicados e impressão da
+  tabela de símbolos.
 - O script exibe `[OK]` ou `[FAIL]` para cada caso e, ao final, o total de
   resultados corretos.
 
