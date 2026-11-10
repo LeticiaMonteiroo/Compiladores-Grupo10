@@ -45,8 +45,8 @@
   desta entrega** (embora os tokens já existam no léxico): parâmetros de
   método, corpo de método com instruções, `return` dentro de uma produção, e
   o uso de operadores em expressões binárias/unárias. Isso está documentado
-  em detalhe, com a justificativa, em
-  [Escopo → Fora do escopo desta entrega](../compiladordetalhes/escopo.md#fora-do-escopo-da-primeira-entrega).
+  em detalhe, com a justificativa, na seção [Fora do escopo da primeira
+  entrega](#fora-do-escopo-da-primeira-entrega) desta página.
 - O que ficou de pé e funcional: declaração de método com modificadores
   (`public`/`private`/`protected`/`static`), tipo de retorno e nome —
   aceitando `nome()` com corpo `{}` vazio.
@@ -73,7 +73,36 @@
 | Operadores                        | Todos reconhecidos no léxico, sem uso na gramática |
 | Comentários                       | Implementado                                     |
 
-Detalhamento completo, com o que ficou de fora e por quê, em [Escopo](../compiladordetalhes/escopo.md).
+O escopo reconhecido atualmente está detalhado em [Escopo](../compiladordetalhes/escopo.md).
+
+## Fora do escopo da primeira entrega
+
+Na Entrega 1, a gramática foi mantida intencionalmente reduzida para consolidar
+uma base estável de análise léxica e sintática. Os itens abaixo não eram
+aceitos pela gramática daquela entrega:
+
+- **Orientação a objetos completa:** sem herança, interfaces, polimorfismo,
+  construtores, atributos de instância ou múltiplas classes por arquivo. A
+  classe funcionava apenas como invólucro sintático para agrupar métodos.
+- **Parâmetros de método:** não havia produção para listas de parâmetros;
+  assinaturas aceitavam apenas `nome()`.
+- **Corpo de método com instruções:** somente blocos vazios `{}` eram aceitos;
+  declarações, atribuições, chamadas e comandos não eram reconhecidos dentro
+  deles.
+- **Retorno de métodos:** `return` era reconhecido pelo lexer, mas não era
+  utilizado em nenhuma produção da gramática.
+- **Expressões compostas:** apesar de o lexer reconhecer operadores, a
+  gramática não montava expressões binárias ou unárias a partir deles.
+- **Estruturas de controle:** `if/else`, `for`, `while`, `do-while` e
+  `switch` não faziam parte da gramática.
+- **Arrays e variáveis em métodos:** declaração e uso de arrays e variáveis
+  dentro dos métodos ainda não eram aceitos.
+- **Tipos compostos:** classes definidas pelo usuário (além do invólucro da
+  classe), enums e generics estavam fora do escopo.
+
+Esse registro descreve especificamente o estado da primeira entrega. O escopo
+evoluiu nas entregas seguintes; consulte [Escopo](../compiladordetalhes/escopo.md)
+para o que o analisador reconhece atualmente.
 
 ## Artefatos no repositório
 
@@ -90,3 +119,4 @@ Detalhamento completo, com o que ficou de fora e por quê, em [Escopo](../compil
 | Versão | Descrição                                      | Autor          | Data      |
 | ------ | ----------------------------------------------- | -------------- | --------- |
 | 1.0    | Criação da página com o resumo da Entrega 1     | Maria Eduarda  | 23/09     |
+| 1.1    | Registro do escopo fora da gramática da Entrega 1 | Maria Eduarda | 06/11    |
