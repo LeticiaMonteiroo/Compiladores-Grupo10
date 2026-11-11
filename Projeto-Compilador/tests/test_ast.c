@@ -80,11 +80,64 @@ static int test_ast_imprime_representacao_da_arvore(void)
     return 1;
 }
 
+static int test_ast_cria_printf_com_string_literal(void)
+{
+    NoAst *formato = ast_criar_no(NO_STRING, "\"Ola\"", NULL, NULL, NULL);
+    NoAst *printf_no = ast_criar_no(NO_PRINTF, NULL, NULL, formato, NULL);
+    FILE *saida = tmpfile();
+    const char *esperado =
+        "Printf\n"
+        "  String \"Ola\"\n";
+
+    ESPERAR(printf_no->tipo_no == NO_PRINTF);
+    ESPERAR(printf_no->a->tipo_no == NO_STRING);
+    ESPERAR(strcmp(printf_no->a->nome, "\"Ola\"") == 0);
+    ESPERAR(printf_no->b == NULL);
+
+    ESPERAR(saida != NULL);
+    ast_imprimir(printf_no, saida);
+    ESPERAR(strcmp(ler_e_fechar(saida), esperado) == 0);
+
+    ast_liberar(printf_no);
+    return 1;
+}
+
+static int test_ast_cria_printf_com_identificador_e_expressao(void)
+{
+    NoAst *formato = ast_criar_no(NO_STRING, "\"%d %d\"", NULL, NULL, NULL);
+    NoAst *argumentos = ast_anexar(
+        ast_criar_identificador("idade"),
+        ast_criar_no(NO_BINARIO, "+", NULL, ast_criar_identificador("x"), ast_criar_int(1)));
+    NoAst *printf_no = ast_criar_no(NO_PRINTF, NULL, NULL, formato, argumentos);
+    FILE *saida = tmpfile();
+    const char *esperado =
+        "Printf\n"
+        "  String \"%d %d\"\n"
+        "  Identificador idade\n"
+        "  Binario +\n"
+        "    Identificador x\n"
+        "    Int 1\n";
+
+    ESPERAR(printf_no->a->tipo_no == NO_STRING);
+    ESPERAR(printf_no->b->tipo_no == NO_IDENTIFICADOR);
+    ESPERAR(printf_no->b->prox->tipo_no == NO_BINARIO);
+    ESPERAR(printf_no->b->prox->prox == NULL);
+
+    ESPERAR(saida != NULL);
+    ast_imprimir(printf_no, saida);
+    ESPERAR(strcmp(ler_e_fechar(saida), esperado) == 0);
+
+    ast_liberar(printf_no);
+    return 1;
+}
+
 int main(void)
 {
     EXECUTAR_TESTE(test_ast_cria_literal_e_identificador);
     EXECUTAR_TESTE(test_ast_cria_while_com_condicao_e_corpo);
     EXECUTAR_TESTE(test_ast_anexar_preserva_ordem);
     EXECUTAR_TESTE(test_ast_imprime_representacao_da_arvore);
+    EXECUTAR_TESTE(test_ast_cria_printf_com_string_literal);
+    EXECUTAR_TESTE(test_ast_cria_printf_com_identificador_e_expressao);
     return resumo_testes();
 }

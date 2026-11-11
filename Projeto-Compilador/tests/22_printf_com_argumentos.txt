@@ -1,0 +1,7 @@
+public class TestePrintfArgumentos {
+    public static void main() {
+        int idade = 20;
+        printf("Idade: %d", idade);
+        printf("Soma: %d e %d", idade + 1, 2 * 3);
+    }
+}

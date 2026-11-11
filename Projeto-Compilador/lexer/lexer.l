@@ -23,6 +23,7 @@
 "void"                  { return VOID; }
 "return"                { return RETURN; }
 "while"                 { return WHILE; }
+"printf"                { return PRINTF; }
 
 
   /* Tipos */

@@ -1,0 +1,5 @@
+public class TestePrintfString {
+    public static void main() {
+        printf("Ola mundo");
+    }
+}

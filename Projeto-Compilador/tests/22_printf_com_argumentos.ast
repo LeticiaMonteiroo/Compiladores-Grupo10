@@ -1,0 +1,7 @@
+    Declaracao idade : int
+    Printf
+      String "Idade: %d"
+      Identificador idade
+      String "Soma: %d e %d"
+      Binario +
+      Binario *

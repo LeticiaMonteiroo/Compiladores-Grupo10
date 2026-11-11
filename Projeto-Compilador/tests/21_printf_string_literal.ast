@@ -1,0 +1,4 @@
+Programa TestePrintfString
+  Metodo main : void
+    Printf
+      String "Ola mundo"

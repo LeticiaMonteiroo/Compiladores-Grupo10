@@ -15,6 +15,17 @@ for arquivo in *.txt; do
         [[ $codigo -eq 0 ]] && resultado="passou (correto)" && passou=1 || { resultado="falhou (ERRADO, deveria passar)"; passou=0; }
     fi
 
+    esperado_ast="${arquivo%.txt}.ast"
+    if [[ $passou -eq 1 && -f "$esperado_ast" ]]; then
+        while IFS= read -r linha; do
+            if ! grep -qxF -- "$linha" /tmp/saida.log; then
+                resultado="AST sem a linha esperada: '$linha'"
+                passou=0
+                break
+            fi
+        done < "$esperado_ast"
+    fi
+
     if [[ $passou -eq 1 ]]; then
         OK=$((OK+1))
         echo "[OK]   $arquivo -> $resultado"

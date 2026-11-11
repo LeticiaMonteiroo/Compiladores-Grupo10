@@ -42,7 +42,7 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 /* Palavras-chave de classe / membros */
 
 %token CLASS PUBLIC PRIVATE PROTECTED STATIC VOID RETURN
-%token WHILE
+%token WHILE PRINTF
 
 
 /* Tipos */
@@ -97,6 +97,7 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 %type <tnome> tipo tipo_retorno
 %type <no> lista_membros membro membro_metodo
 %type <no> lista_comandos comando comando_declaracao comando_while
+%type <no> comando_printf lista_argumentos
 %type <no> comando_reatribuicao comando_incremento_decremento
 %type <no> expressao expressao_and expressao_not expressao_relacional
 %type <no> expressao_aritmetica termo fator operando
@@ -232,6 +233,7 @@ comando
     | comando_reatribuicao
     | comando_incremento_decremento
     | comando_declaracao
+    | comando_printf
     ;
 
 
@@ -242,6 +244,34 @@ comando_while
         {
             printf("While reconhecido\n");
             $$ = ast_criar_no(NO_WHILE, NULL, NULL, $3, $6);
+        }
+    ;
+
+
+/* PRINTF */
+
+comando_printf
+    : PRINTF LPAREN STRING_LITERAL RPAREN SEMICOLON
+        {
+            printf("Printf reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTF, NULL, NULL,
+                ast_criar_no(NO_STRING, $3, NULL, NULL, NULL), NULL);
+            free($3);
+        }
+    | PRINTF LPAREN STRING_LITERAL COMMA lista_argumentos RPAREN SEMICOLON
+        {
+            printf("Printf com argumentos reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTF, NULL, NULL,
+                ast_criar_no(NO_STRING, $3, NULL, NULL, NULL), $5);
+            free($3);
+        }
+    ;
+
+lista_argumentos
+    : expressao
+    | lista_argumentos COMMA expressao
+        {
+            $$ = ast_anexar($1, $3);
         }
     ;
 
