@@ -1,4 +1,4 @@
 Programa TestePrintfString
-  Metodo main : void
-    Printf
-      String "Ola mundo"
+└── Metodo main : void
+    └── Printf
+        └── String "Ola mundo"

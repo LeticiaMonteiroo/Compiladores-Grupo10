@@ -14,7 +14,7 @@ PARSER_OUT_H = parser.tab.h
 TARGET = compilador
 UNIT_TESTS = tests/test_ast tests/test_tabela_simbolos
 
-.PHONY: all run test clean
+.PHONY: all run ast test clean
 
 all: $(TARGET)
 
@@ -35,6 +35,10 @@ tests/test_tabela_simbolos: tests/test_tabela_simbolos.c tests/teste_util.h src/
 
 run: $(TARGET)
 	./$(TARGET)
+
+ast: $(TARGET)
+	@test -n "$(ARQ)" || { echo "Uso: make ast ARQ=tests/arquivo.txt"; exit 1; }
+	./$(TARGET) $(ARQ)
 
 test: $(TARGET) $(UNIT_TESTS)
 	./tests/test_ast

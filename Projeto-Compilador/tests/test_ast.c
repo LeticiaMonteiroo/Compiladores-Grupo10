@@ -68,9 +68,9 @@ static int test_ast_imprime_representacao_da_arvore(void)
     FILE *saida = tmpfile();
     const char *esperado =
         "Programa Teste\n"
-        "  Metodo main : void\n"
-        "    Declaracao valor : double\n"
-        "      Double 10.5\n";
+        "└── Metodo main : void\n"
+        "    └── Declaracao valor : double\n"
+        "        └── Double 10.5\n";
 
     ESPERAR(saida != NULL);
     ast_imprimir(programa, saida);
@@ -87,7 +87,7 @@ static int test_ast_cria_printf_com_string_literal(void)
     FILE *saida = tmpfile();
     const char *esperado =
         "Printf\n"
-        "  String \"Ola\"\n";
+        "└── String \"Ola\"\n";
 
     ESPERAR(printf_no->tipo_no == NO_PRINTF);
     ESPERAR(printf_no->a->tipo_no == NO_STRING);
@@ -112,11 +112,11 @@ static int test_ast_cria_printf_com_identificador_e_expressao(void)
     FILE *saida = tmpfile();
     const char *esperado =
         "Printf\n"
-        "  String \"%d %d\"\n"
-        "  Identificador idade\n"
-        "  Binario +\n"
-        "    Identificador x\n"
-        "    Int 1\n";
+        "├── String \"%d %d\"\n"
+        "├── Identificador idade\n"
+        "└── Binario +\n"
+        "    ├── Identificador x\n"
+        "    └── Int 1\n";
 
     ESPERAR(printf_no->a->tipo_no == NO_STRING);
     ESPERAR(printf_no->b->tipo_no == NO_IDENTIFICADOR);
@@ -131,6 +131,36 @@ static int test_ast_cria_printf_com_identificador_e_expressao(void)
     return 1;
 }
 
+static int test_ast_imprime_while_com_condicao_e_corpo(void)
+{
+    NoAst *condicao = ast_criar_no(NO_BINARIO, ">", NULL,
+        ast_criar_identificador("x"), ast_criar_int(0));
+    NoAst *corpo = ast_anexar(
+        ast_criar_no(NO_ATRIBUICAO, "-=", NULL, ast_criar_identificador("x"), ast_criar_int(1)),
+        ast_criar_no(NO_POSFIXO, "++", NULL, ast_criar_identificador("i"), NULL));
+    NoAst *laco = ast_criar_no(NO_WHILE, NULL, NULL, condicao, corpo);
+    FILE *saida = tmpfile();
+    const char *esperado =
+        "While\n"
+        "├── Condicao\n"
+        "│   └── Binario >\n"
+        "│       ├── Identificador x\n"
+        "│       └── Int 0\n"
+        "└── Corpo\n"
+        "    ├── Atribuicao -=\n"
+        "    │   ├── Identificador x\n"
+        "    │   └── Int 1\n"
+        "    └── Posfixo ++\n"
+        "        └── Identificador i\n";
+
+    ESPERAR(saida != NULL);
+    ast_imprimir(laco, saida);
+    ESPERAR(strcmp(ler_e_fechar(saida), esperado) == 0);
+
+    ast_liberar(laco);
+    return 1;
+}
+
 int main(void)
 {
     EXECUTAR_TESTE(test_ast_cria_literal_e_identificador);
@@ -139,5 +169,6 @@ int main(void)
     EXECUTAR_TESTE(test_ast_imprime_representacao_da_arvore);
     EXECUTAR_TESTE(test_ast_cria_printf_com_string_literal);
     EXECUTAR_TESTE(test_ast_cria_printf_com_identificador_e_expressao);
+    EXECUTAR_TESTE(test_ast_imprime_while_com_condicao_e_corpo);
     return resumo_testes();
 }

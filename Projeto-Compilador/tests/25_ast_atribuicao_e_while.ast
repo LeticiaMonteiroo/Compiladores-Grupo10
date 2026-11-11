@@ -1,0 +1,16 @@
+Programa TesteAst
+└── Metodo main : void
+    ├── Declaracao i : int
+    │   └── Int 0
+    └── While
+        ├── Condicao
+        │   └── Binario <
+        │       ├── Identificador i
+        │       └── Int 3
+        └── Corpo
+            ├── Atribuicao +=
+            │   ├── Identificador i
+            │   └── Int 1
+            └── Printf
+                ├── String "i = %d"
+                └── Identificador i
