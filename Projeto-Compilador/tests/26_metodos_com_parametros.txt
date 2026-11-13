@@ -1,0 +1,11 @@
+public class Parametros {
+    public void vazio() {
+    }
+
+    public int somar(int primeiro, int segundo) {
+        int resultado = primeiro + segundo;
+    }
+
+    protected double converter(String texto, boolean ativo, char inicial) {
+    }
+}
