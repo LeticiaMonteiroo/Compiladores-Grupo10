@@ -10,7 +10,7 @@
 | Tipos | `int`, `double`, `float`, `boolean`, `char`, `long`, `short`, `byte`, `String` e `void` como tipo de retorno |
 | Classe | Uma classe por programa; modificador `public` opcional |
 | Métodos | Métodos com tipo de retorno e um modificador de acesso (`public`, `private` ou `protected`), com `static` opcional, ou somente `static` |
-| Parâmetros | **Não implementados.** A lista de parâmetros deve ser vazia: `()` |
+| Parâmetros | Parâmetros posicionais com tipo e nome, separados por vírgula; representados na AST |
 | Declarações locais | Variáveis dos tipos listados, com ou sem inicialização |
 | Atribuições | Atribuição simples (`=`) e composta (`+=`, `-=`, `*=`, `/=`, `%=`) |
 | Incremento/decremento | Formas prefixas e pós-fixas (`++` e `--`), como comandos ou fatores de expressão |
@@ -37,8 +37,9 @@ O lexer também reconhece operadores bit a bit (`>>`, `<<`, `>>>`, `&`, `|`,
 
 - **Tradução para C#:** o programa ainda não gera código C# nem executa o
   programa analisado.
-- **Parâmetros e chamadas de método:** métodos aceitam somente `()` vazio;
-  chamadas não fazem parte da gramática.
+- **Chamadas de método:** chamadas não fazem parte da gramática. Parâmetros
+  são aceitos nas assinaturas, mas ainda não têm validação semântica de escopo
+  ou uso.
 - **Retorno de métodos:** `return` é reconhecido pelo lexer, mas ainda não há
   produção sintática para ele.
 - **Outras estruturas de controle:** `if/else`, `for`, `do-while` e `switch`.
