@@ -3,9 +3,9 @@
 #include "ast.h"
 
 static const char *ROTULOS[] = {
-    "Programa", "Metodo", "Declaracao", "While", "Printf", "Atribuicao",
-    "Prefixo", "Posfixo", "Binario", "Unario", "Identificador",
-    "Int", "Double", "String", "Char", "Boolean", "Null"
+    "Programa", "Metodo", "Parametro", "Declaracao", "While", "Printf",
+    "Atribuicao", "Prefixo", "Posfixo", "Binario", "Unario",
+    "Identificador", "Int", "Double", "String", "Char", "Boolean", "Null"
 };
 
 static void *alocar_ou_sair(void *ptr)

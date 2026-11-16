@@ -6,6 +6,7 @@
 typedef enum {
     NO_PROGRAMA,
     NO_METODO,
+    NO_PARAMETRO,
     NO_DECLARACAO,
     NO_WHILE,
     NO_PRINTF,

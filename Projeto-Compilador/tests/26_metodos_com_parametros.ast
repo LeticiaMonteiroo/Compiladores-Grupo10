@@ -1,0 +1,13 @@
+Programa Parametros
+├── Metodo vazio : void
+├── Metodo somar : int
+│   ├── Parametro primeiro : int
+│   ├── Parametro segundo : int
+│   └── Declaracao resultado : int
+│       └── Binario +
+│           ├── Identificador primeiro
+│           └── Identificador segundo
+└── Metodo converter : double
+    ├── Parametro texto : String
+    ├── Parametro ativo : boolean
+    └── Parametro inicial : char

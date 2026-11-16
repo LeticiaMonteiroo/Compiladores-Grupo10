@@ -96,6 +96,7 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 
 %type <tnome> tipo tipo_retorno
 %type <no> lista_membros membro membro_metodo
+%type <no> lista_parametros_opt lista_parametros parametro
 %type <no> lista_comandos comando comando_declaracao comando_while
 %type <no> comando_printf lista_argumentos
 %type <no> comando_reatribuicao comando_incremento_decremento
@@ -172,13 +173,37 @@ membro
 
 membro_metodo
     : modificadores_membro tipo_retorno IDENTIFIER
-      LPAREN RPAREN
+      LPAREN lista_parametros_opt RPAREN
       LBRACE lista_comandos RBRACE
         {
             printf("Metodo reconhecido: %s\n", $3);
-            $$ = ast_criar_no(NO_METODO, $3, $2, $7, NULL);
+            $$ = ast_criar_no(NO_METODO, $3, $2, $5, $8);
             tabela_inserir(tabela_simbolos, $3, $2, SIMBOLO_METODO);
             free($3);
+        }
+    ;
+
+lista_parametros_opt
+    :
+        {
+            $$ = NULL;
+        }
+    | lista_parametros
+    ;
+
+lista_parametros
+    : parametro
+    | lista_parametros COMMA parametro
+        {
+            $$ = ast_anexar($1, $3);
+        }
+    ;
+
+parametro
+    : tipo IDENTIFIER
+        {
+            $$ = ast_criar_no(NO_PARAMETRO, $2, $1, NULL, NULL);
+            free($2);
         }
     ;
 
