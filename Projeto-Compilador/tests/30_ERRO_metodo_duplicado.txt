@@ -1,0 +1,7 @@
+public class MetodoDuplicado {
+    public void executar() {
+    }
+
+    public int executar() {
+    }
+}
