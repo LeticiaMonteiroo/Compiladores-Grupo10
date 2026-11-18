@@ -42,7 +42,8 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 /* Palavras-chave de classe / membros */
 
 %token CLASS PUBLIC PRIVATE PROTECTED STATIC VOID RETURN
-%token WHILE PRINTF
+%token WHILE SYSTEM OUT PRINTLN PRINT PRINTF
+
 
 
 /* Tipos */
@@ -98,7 +99,7 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 %type <no> lista_membros membro membro_metodo
 %type <no> lista_parametros_opt lista_parametros parametro
 %type <no> lista_comandos comando comando_declaracao comando_while
-%type <no> comando_printf lista_argumentos
+%type <no> comando_printf comando_print lista_argumentos
 %type <no> comando_reatribuicao comando_incremento_decremento
 %type <no> expressao expressao_and expressao_not expressao_relacional
 %type <no> expressao_aritmetica termo fator operando
@@ -205,6 +206,11 @@ parametro
             $$ = ast_criar_no(NO_PARAMETRO, $2, $1, NULL, NULL);
             free($2);
         }
+    | tipo LBRACKET RBRACKET IDENTIFIER
+        {
+            $$ = ast_criar_no(NO_PARAMETRO, $4, $1, NULL, NULL);
+            free($4);
+        }
     ;
 
 
@@ -252,13 +258,13 @@ comando_declaracao
             free($2);
         }
     ;
-
 comando
     : comando_while
     | comando_reatribuicao
     | comando_incremento_decremento
     | comando_declaracao
     | comando_printf
+    | comando_print
     ;
 
 
@@ -273,7 +279,7 @@ comando_while
     ;
 
 
-/* PRINTF */
+/* PRINTF (Aceita tanto printf(...) quanto System.out.printf(...)) */
 
 comando_printf
     : PRINTF LPAREN STRING_LITERAL RPAREN SEMICOLON
@@ -290,8 +296,43 @@ comando_printf
                 ast_criar_no(NO_STRING, $3, NULL, NULL, NULL), $5);
             free($3);
         }
+    | SYSTEM DOT OUT DOT PRINTF LPAREN STRING_LITERAL RPAREN SEMICOLON
+        {
+            printf("System.out.printf reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTF, NULL, NULL,
+                ast_criar_no(NO_STRING, $7, NULL, NULL, NULL), NULL);
+            free($7);
+        }
+    | SYSTEM DOT OUT DOT PRINTF LPAREN STRING_LITERAL COMMA lista_argumentos RPAREN SEMICOLON
+        {
+            printf("System.out.printf com argumentos reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTF, NULL, NULL,
+                ast_criar_no(NO_STRING, $7, NULL, NULL, NULL), $9);
+            free($7);
+        }
     ;
 
+
+/* PRINT E PRINTLN (Padrao Java: System.out.println e System.out.print) */
+
+comando_print
+    : SYSTEM DOT OUT DOT PRINTLN LPAREN expressao RPAREN SEMICOLON
+        {
+            printf("System.out.println reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTLN, NULL, NULL, $7, NULL);
+        }
+    | SYSTEM DOT OUT DOT PRINTLN LPAREN RPAREN SEMICOLON
+        {
+            printf("System.out.println vazio reconhecido\n");
+            $$ = ast_criar_no(NO_PRINTLN, NULL, NULL, NULL, NULL);
+        }
+    | SYSTEM DOT OUT DOT PRINT LPAREN expressao RPAREN SEMICOLON
+        {
+            printf("System.out.print reconhecido\n");
+            $$ = ast_criar_no(NO_PRINT, NULL, NULL, $7, NULL);
+        }
+    ;
+    
 lista_argumentos
     : expressao
     | lista_argumentos COMMA expressao

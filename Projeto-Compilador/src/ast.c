@@ -3,7 +3,7 @@
 #include "ast.h"
 
 static const char *ROTULOS[] = {
-    "Programa", "Metodo", "Parametro", "Declaracao", "While", "Printf",
+    "Programa", "Metodo", "Parametro", "Declaracao", "While", "Println", "Print", "Printf",
     "Atribuicao", "Prefixo", "Posfixo", "Binario", "Unario",
     "Identificador", "Int", "Double", "String", "Char", "Boolean", "Null"
 };

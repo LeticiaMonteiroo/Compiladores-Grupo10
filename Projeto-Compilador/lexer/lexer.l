@@ -24,6 +24,10 @@
 "return"                { return RETURN; }
 "while"                 { return WHILE; }
 "printf"                { return PRINTF; }
+"System"                { return SYSTEM; }
+"out"                   { return OUT; }
+"println"               { return PRINTLN; }
+"print"                 { return PRINT; }
 
 
   /* Tipos */

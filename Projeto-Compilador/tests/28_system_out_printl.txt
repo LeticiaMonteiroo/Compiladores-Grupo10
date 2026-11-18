@@ -1,0 +1,15 @@
+public class TesteSaida {
+    public static void main(String[] args) {
+        System.out.println("Iniciando teste do System.out...");
+        System.out.println();
+
+        int contador = 1;
+        while (contador <= 5) {
+            System.out.print(contador);
+            contador++;
+        }
+
+        double nota = 9.5;
+        System.out.printf("Contagem final: %d | Nota: %f\n", contador, nota);
+    }
+}
