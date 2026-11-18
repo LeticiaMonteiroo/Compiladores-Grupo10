@@ -9,6 +9,8 @@ typedef enum {
     NO_PARAMETRO,
     NO_DECLARACAO,
     NO_WHILE,
+    NO_PRINTLN,
+    NO_PRINT,
     NO_PRINTF,
     NO_ATRIBUICAO,
     NO_PREFIXO,
