@@ -2,11 +2,13 @@
 #include "parser.tab.h"
 #include "ast.h"
 #include "tabela_simbolos.h"
+#include "semantico.h"
 
 extern FILE *yyin;
 
 int main(int argc, char **argv) {
     int resultado;
+    int erros_semanticos = 0;
 
     if (argc > 1) {
         yyin = fopen(argv[1], "r");
@@ -20,11 +22,14 @@ int main(int argc, char **argv) {
     resultado = yyparse();
 
     if (resultado == 0) {
-        printf("Analise sintatica concluida com sucesso.\n");
-        printf("Arvore sintatica abstrata:\n");
-        ast_imprimir(ast_raiz, stdout);
-        printf("Tabela de simbolos:\n");
-        tabela_imprimir(tabela_simbolos, stdout);
+        erros_semanticos = analisar_semantica(ast_raiz, tabela_simbolos);
+        if (erros_semanticos == 0) {
+            printf("Analise sintatica concluida com sucesso.\n");
+            printf("Arvore sintatica abstrata:\n");
+            ast_imprimir(ast_raiz, stdout);
+            printf("Tabela de simbolos:\n");
+            tabela_imprimir(tabela_simbolos, stdout);
+        }
     }
 
     if (argc > 1) {
@@ -34,5 +39,5 @@ int main(int argc, char **argv) {
     ast_liberar(ast_raiz);
     tabela_liberar(tabela_simbolos);
 
-    return resultado == 0 ? 0 : 1;
+    return resultado == 0 && erros_semanticos == 0 ? 0 : 1;
 }

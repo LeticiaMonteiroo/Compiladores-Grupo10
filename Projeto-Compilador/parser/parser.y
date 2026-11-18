@@ -11,6 +11,7 @@ extern TabelaSimbolos *tabela_simbolos;
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "semantico.h"
 
 int yylex(void);
 void yyerror(const char *s);
@@ -31,9 +32,22 @@ extern int yylineno;
 NoAst *ast_raiz = NULL;
 TabelaSimbolos *tabela_simbolos = NULL;
 
-static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicializacao)
+static void inserir_simbolo(const char *nome, const char *tipo,
+                            CategoriaSimbolo categoria, int linha)
 {
-    tabela_inserir(tabela_simbolos, nome, tipo, SIMBOLO_VARIAVEL);
+    if (!tabela_inserir(tabela_simbolos, nome, tipo, categoria)) {
+        if (tabela_buscar(tabela_simbolos, nome) != NULL) {
+            semantico_registrar_redeclaracao(linha, nome);
+        } else {
+            semantico_registrar_falha_insercao(linha, nome);
+        }
+    }
+}
+
+static NoAst *criar_declaracao(const char *tipo, const char *nome,
+                               NoAst *inicializacao, int linha)
+{
+    inserir_simbolo(nome, tipo, SIMBOLO_VARIAVEL, linha);
     return ast_criar_no(NO_DECLARACAO, nome, tipo, inicializacao, NULL);
 }
 }
@@ -86,6 +100,8 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome, NoAst *inicia
 %token LBRACKET RBRACKET
 %token SEMICOLON COMMA DOT
 
+%locations
+
 
 /* Liberação de valores */
 
@@ -124,7 +140,7 @@ programa
         {
             printf("Programa reconhecido: classe '%s'\n", $3);
             ast_raiz = ast_criar_no(NO_PROGRAMA, $3, NULL, $5, NULL);
-            tabela_inserir(tabela_simbolos, $3, NULL, SIMBOLO_CLASSE);
+            inserir_simbolo($3, NULL, SIMBOLO_CLASSE, @3.first_line);
             free($3);
         }
     ;
@@ -179,7 +195,7 @@ membro_metodo
         {
             printf("Metodo reconhecido: %s\n", $3);
             $$ = ast_criar_no(NO_METODO, $3, $2, $5, $8);
-            tabela_inserir(tabela_simbolos, $3, $2, SIMBOLO_METODO);
+            inserir_simbolo($3, $2, SIMBOLO_METODO, @3.first_line);
             free($3);
         }
     ;
@@ -248,13 +264,13 @@ comando_declaracao
 : tipo IDENTIFIER SEMICOLON
         {
             printf("Declaracao de variavel simples '%s' reconhecida\n", $2);
-            $$ = criar_declaracao($1, $2, NULL);
+            $$ = criar_declaracao($1, $2, NULL, @2.first_line);
             free($2);
         }
     | tipo IDENTIFIER ASSIGN expressao SEMICOLON
         {
             printf("Declaracao de variavel '%s' com inicializacao reconhecida\n", $2);
-            $$ = criar_declaracao($1, $2, $4);
+            $$ = criar_declaracao($1, $2, $4, @2.first_line);
             free($2);
         }
     ;

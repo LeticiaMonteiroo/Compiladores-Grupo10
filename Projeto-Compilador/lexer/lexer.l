@@ -2,6 +2,8 @@
 #include "parser.tab.h"
 #include <stdlib.h>
 #include <string.h>
+
+#define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno;
 %}
 
 %option noyywrap
