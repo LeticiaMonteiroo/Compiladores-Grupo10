@@ -4,8 +4,8 @@ LDLIBS = -lfl
 
 LEXER_SRC = lexer/lexer.l
 PARSER_SRC = parser/parser.y
-SRC_FILES = src/main.c src/ast.c src/tabela_simbolos.c
-SRC_HEADERS = src/ast.h src/tabela_simbolos.h
+SRC_FILES = src/main.c src/ast.c src/tabela_simbolos.c src/semantico.c
+SRC_HEADERS = src/ast.h src/tabela_simbolos.h src/semantico.h
 
 LEX_OUT = lex.yy.c
 PARSER_OUT_C = parser.tab.c

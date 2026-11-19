@@ -1,0 +1,6 @@
+public class VariavelDuplicada {
+    public static void main() {
+        int a;
+        double a;
+    }
+}

@@ -26,6 +26,17 @@ for arquivo in *.txt; do
         done < "$esperado_ast"
     fi
 
+    esperado_erro="${arquivo%.txt}.err"
+    if [[ $passou -eq 1 && -f "$esperado_erro" ]]; then
+        while IFS= read -r linha; do
+            if ! grep -qxF -- "$linha" /tmp/saida.log; then
+                resultado="mensagem de erro ausente: '$linha'"
+                passou=0
+                break
+            fi
+        done < "$esperado_erro"
+    fi
+
     if [[ $passou -eq 1 ]]; then
         OK=$((OK+1))
         echo "[OK]   $arquivo -> $resultado"
