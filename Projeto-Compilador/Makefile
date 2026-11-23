@@ -4,15 +4,15 @@ LDLIBS = -lfl
 
 LEXER_SRC = lexer/lexer.l
 PARSER_SRC = parser/parser.y
-SRC_FILES = src/main.c src/ast.c src/tabela_simbolos.c src/semantico.c
-SRC_HEADERS = src/ast.h src/tabela_simbolos.h src/semantico.h
+SRC_FILES = src/main.c src/ast.c src/tabela_simbolos.c src/semantico.c src/codegen.c
+SRC_HEADERS = src/ast.h src/tabela_simbolos.h src/semantico.h src/codegen.h
 
 LEX_OUT = lex.yy.c
 PARSER_OUT_C = parser.tab.c
 PARSER_OUT_H = parser.tab.h
 
 TARGET = compilador
-UNIT_TESTS = tests/test_ast tests/test_tabela_simbolos
+UNIT_TESTS = tests/test_ast tests/test_tabela_simbolos tests/test_codegen
 
 .PHONY: all run ast test clean
 
@@ -33,6 +33,9 @@ tests/test_ast: tests/test_ast.c tests/teste_util.h src/ast.c src/ast.h
 tests/test_tabela_simbolos: tests/test_tabela_simbolos.c tests/teste_util.h src/tabela_simbolos.c src/tabela_simbolos.h
 	$(CC) $(CFLAGS) -o $@ tests/test_tabela_simbolos.c src/tabela_simbolos.c
 
+tests/test_codegen: tests/test_codegen.c tests/teste_util.h src/codegen.c src/codegen.h src/ast.c src/ast.h
+	$(CC) $(CFLAGS) -o $@ tests/test_codegen.c src/codegen.c src/ast.c
+
 run: $(TARGET)
 	./$(TARGET)
 
@@ -43,6 +46,7 @@ ast: $(TARGET)
 test: $(TARGET) $(UNIT_TESTS)
 	./tests/test_ast
 	./tests/test_tabela_simbolos
+	./tests/test_codegen
 	chmod +x tests/testes.sh
 	cd tests && bash ./testes.sh
 

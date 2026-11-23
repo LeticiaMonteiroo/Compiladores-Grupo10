@@ -39,3 +39,4 @@ Thumbs.db
 # Binarios dos testes unitarios
 test_ast
 test_tabela_simbolos
+test_codegen
