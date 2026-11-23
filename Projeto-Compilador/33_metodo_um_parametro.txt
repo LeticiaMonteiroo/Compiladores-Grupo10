@@ -1,0 +1,6 @@
+
+public class TesteUmParametro {
+    public int calcular(int numero) {
+        int resultado = numero + 10;
+    }
+}
