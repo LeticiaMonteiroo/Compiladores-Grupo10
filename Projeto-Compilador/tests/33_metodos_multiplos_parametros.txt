@@ -1,0 +1,9 @@
+
+public class TesteMultiplosParametros {
+    public void cadastrar(String nome, int idade, double altura, boolean ativo) {
+    }
+
+    public int calcular(int a, int b, int c) {
+        int resultado = a + b + c;
+    }
+}
