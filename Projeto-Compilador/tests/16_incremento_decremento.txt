@@ -1,5 +1,11 @@
 public class TesteIncDec {
     public static void main() {
+        int i = 0;
+        int z = 0;
+        int k = 0;
+        int x = 0;
+        int y;
+        int w;
         i++;
         i--;
         ++i;

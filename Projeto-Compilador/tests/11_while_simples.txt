@@ -1,5 +1,6 @@
 class Teste {
     public static void main() {
+        int x = 0;
         while (x < 10) {
         }
     }

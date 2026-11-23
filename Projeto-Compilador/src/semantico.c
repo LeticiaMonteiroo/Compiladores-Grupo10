@@ -4,6 +4,23 @@
 
 static int erros_semanticos;
 
+static const NoAst *metodo_atual = NULL;
+
+static const char *buscar_tipo_parametro_local(const char *nome)
+{
+    const NoAst *param;
+    if (metodo_atual == NULL || nome == NULL) return NULL;
+
+    for (param = metodo_atual->a; param != NULL; param = param->prox) {
+        if (param->tipo_no == NO_PARAMETRO &&
+            param->nome != NULL &&
+            strcmp(param->nome, nome) == 0) {
+            return param->tipo;
+        }
+    }
+    return NULL;
+}
+
 void semantico_registrar_redeclaracao(int linha, const char *nome)
 {
     fprintf(stderr,
@@ -69,6 +86,11 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
         case NO_NULL:    return "null";
 
         case NO_IDENTIFICADOR: {
+            const char *tipo_param = buscar_tipo_parametro_local(no->nome);
+            if (tipo_param != NULL) {
+                return tipo_param;
+            }
+
             const Simbolo *simb = tabela_buscar(tabela, no->nome);
             if (simb == NULL) {
                 fprintf(stderr, "Erro semantico: identificador '%s' nao declarado\n",
@@ -203,7 +225,9 @@ static void verificar_no(const NoAst *no, const TabelaSimbolos *tabela)
                 break;
 
             case NO_METODO:
+                metodo_atual = no;
                 verificar_no(no->b, tabela);
+                metodo_atual = NULL;
                 break;
 
             case NO_DECLARACAO:
