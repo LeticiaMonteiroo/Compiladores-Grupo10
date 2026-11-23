@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "semantico.h"
 
@@ -6,10 +7,58 @@ static int erros_semanticos;
 
 static const NoAst *metodo_atual = NULL;
 
+typedef struct Visivel {
+    const char *nome;
+    struct Visivel *prox;
+} Visivel;
+
+static Visivel *visiveis;
+
+static void marcar_visivel(const char *nome)
+{
+    Visivel *v = malloc(sizeof(Visivel));
+
+    if (v == NULL) {
+        fprintf(stderr, "Erro: memoria insuficiente\n");
+        exit(1);
+    }
+    v->nome = nome;
+    v->prox = visiveis;
+    visiveis = v;
+}
+
+static int eh_visivel(const char *nome)
+{
+    const Visivel *v;
+
+    if (nome == NULL) {
+        return 0;
+    }
+    for (v = visiveis; v != NULL; v = v->prox) {
+        if (strcmp(v->nome, nome) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static void limpar_visiveis(void)
+{
+    while (visiveis != NULL) {
+        Visivel *prox = visiveis->prox;
+
+        free(visiveis);
+        visiveis = prox;
+    }
+}
+
 static const char *buscar_tipo_parametro_local(const char *nome)
 {
     const NoAst *param;
-    if (metodo_atual == NULL || nome == NULL) return NULL;
+
+    if (metodo_atual == NULL || nome == NULL) {
+        return NULL;
+    }
 
     for (param = metodo_atual->a; param != NULL; param = param->prox) {
         if (param->tipo_no == NO_PARAMETRO &&
@@ -86,24 +135,51 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
         case NO_NULL:    return "null";
 
         case NO_IDENTIFICADOR: {
-            const char *tipo_param = buscar_tipo_parametro_local(no->nome);
+            const char *tipo_param;
+            const Simbolo *simbolo;
+
+            if (!eh_visivel(no->nome)) {
+                simbolo = tabela_buscar(tabela, no->nome);
+                if (simbolo == NULL) {
+                    fprintf(stderr,
+                            "Erro semantico: variavel '%s' usada sem ter sido declarada\n",
+                            no->nome ? no->nome : "?");
+                } else if (simbolo->categoria != SIMBOLO_VARIAVEL) {
+                    fprintf(stderr,
+                            "Erro semantico: '%s' e %s, nao uma variavel\n",
+                            no->nome,
+                            simbolo->categoria == SIMBOLO_METODO ? "um metodo" : "uma classe");
+                } else {
+                    fprintf(stderr,
+                            "Erro semantico: variavel '%s' usada antes de sua declaracao\n",
+                            no->nome);
+                }
+                erros_semanticos++;
+                return NULL;
+            }
+
+            tipo_param = buscar_tipo_parametro_local(no->nome);
             if (tipo_param != NULL) {
                 return tipo_param;
             }
 
-            const Simbolo *simb = tabela_buscar(tabela, no->nome);
-            if (simb == NULL) {
-                fprintf(stderr, "Erro semantico: identificador '%s' nao declarado\n",
+            simbolo = tabela_buscar(tabela, no->nome);
+            if (simbolo == NULL) {
+                fprintf(stderr,
+                        "Erro semantico: variavel '%s' usada sem ter sido declarada\n",
                         no->nome ? no->nome : "?");
                 erros_semanticos++;
                 return NULL;
             }
-            if (simb->categoria != SIMBOLO_VARIAVEL) {
-                fprintf(stderr, "Erro semantico: '%s' nao e uma variavel\n", simb->nome);
+            if (simbolo->categoria != SIMBOLO_VARIAVEL) {
+                fprintf(stderr,
+                        "Erro semantico: '%s' e %s, nao uma variavel\n",
+                        no->nome,
+                        simbolo->categoria == SIMBOLO_METODO ? "um metodo" : "uma classe");
                 erros_semanticos++;
                 return NULL;
             }
-            return simb->tipo;
+            return simbolo->tipo;
         }
 
         case NO_UNARIO: {
@@ -112,7 +188,9 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
 
             if (strcmp(no->nome, "!") == 0) {
                 if (strcmp(tipo_op, "boolean") != 0) {
-                    fprintf(stderr, "Erro semantico: operador '!' exige 'boolean', recebido '%s'\n", tipo_op);
+                    fprintf(stderr,
+                            "Erro semantico: operador '!' exige 'boolean', recebido '%s'\n",
+                            tipo_op);
                     erros_semanticos++;
                     return NULL;
                 }
@@ -120,7 +198,8 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
             }
 
             if (!eh_tipo_numerico(tipo_op)) {
-                fprintf(stderr, "Erro semantico: operador unario '%s' exige tipo numerico, recebido '%s'\n",
+                fprintf(stderr,
+                        "Erro semantico: operador unario '%s' exige tipo numerico, recebido '%s'\n",
                         no->nome, tipo_op);
                 erros_semanticos++;
                 return NULL;
@@ -134,7 +213,8 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
             if (tipo_op == NULL) return NULL;
 
             if (!eh_tipo_numerico(tipo_op)) {
-                fprintf(stderr, "Erro semantico: operador '%s' exige variavel numerica, recebido '%s'\n",
+                fprintf(stderr,
+                        "Erro semantico: operador '%s' exige variavel numerica, recebido '%s'\n",
                         no->nome, tipo_op);
                 erros_semanticos++;
                 return NULL;
@@ -216,18 +296,26 @@ const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela
     }
 }
 
-static void verificar_no(const NoAst *no, const TabelaSimbolos *tabela)
+/* Travessia recursiva da AST (filhos em a/b, irmaos em prox) */
+static void percorrer(const NoAst *no, const TabelaSimbolos *tabela)
 {
     for (; no != NULL; no = no->prox) {
         switch (no->tipo_no) {
             case NO_PROGRAMA:
-                verificar_no(no->a, tabela);
+                percorrer(no->a, tabela);
                 break;
 
             case NO_METODO:
+                limpar_visiveis();
                 metodo_atual = no;
-                verificar_no(no->b, tabela);
+                percorrer(no->a, tabela);   /* parametros */
+                percorrer(no->b, tabela);   /* corpo */
                 metodo_atual = NULL;
+                limpar_visiveis();
+                break;
+
+            case NO_PARAMETRO:
+                marcar_visivel(no->nome);
                 break;
 
             case NO_DECLARACAO:
@@ -240,6 +328,7 @@ static void verificar_no(const NoAst *no, const TabelaSimbolos *tabela)
                         erros_semanticos++;
                     }
                 }
+                marcar_visivel(no->nome);
                 break;
 
             case NO_ATRIBUICAO: {
@@ -270,7 +359,7 @@ static void verificar_no(const NoAst *no, const TabelaSimbolos *tabela)
                             tipo_cond);
                     erros_semanticos++;
                 }
-                verificar_no(no->b, tabela);
+                percorrer(no->b, tabela);
                 break;
             }
 
@@ -308,6 +397,6 @@ int analisar_semantica(const NoAst *raiz, const TabelaSimbolos *tabela)
         return erros_semanticos;
     }
 
-    verificar_no(raiz, tabela);
+    percorrer(raiz, tabela);
     return erros_semanticos;
 }
