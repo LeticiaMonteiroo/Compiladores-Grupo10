@@ -42,7 +42,9 @@
 "long"                  { return TYPE_LONG; }
 "short"                 { return TYPE_SHORT; }
 "byte"                  { return TYPE_BYTE; }
-"String"                { return TYPE_STRING; }
+"String"                { return TYPE_STRING; } 
+"if"                    { return IF; }
+"else"                  { return ELSE; }
 
 
   /* Literais */
@@ -139,5 +141,6 @@
                                 yylineno
                             );
                         }
+
 
 %%
