@@ -1,0 +1,7 @@
+public class T {
+    public static void main() {
+        while (y > 0) {
+            System.out.println(1);
+        }
+    }
+}
