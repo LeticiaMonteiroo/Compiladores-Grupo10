@@ -1,0 +1,9 @@
+public class Sombreamento {
+    public static void main(String[] args) {
+        int x = 1;
+        boolean continuar = true;
+        while (continuar) {
+            int x = 2;
+        }
+    }
+}

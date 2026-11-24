@@ -18,7 +18,7 @@
 | Expressões | Literais, identificadores, parênteses, operadores aritméticos, relacionais e lógicos |
 | Comentários | Comentários de linha (`//`) e de bloco (`/* ... */`), ignorados pelo lexer |
 | AST | Árvore sintática abstrata construída durante o parsing e impressa ao final |
-| Tabela de símbolos | Registra classe, métodos e variáveis; é impressa ao final |
+| Tabela de símbolos | Pilha de escopos (global, método e bloco do `while`); registra classe, métodos, parâmetros e variáveis; é impressa ao final, por escopo |
 
 ## Operadores aceitos na sintaxe
 
@@ -38,8 +38,7 @@ O lexer também reconhece operadores bit a bit (`>>`, `<<`, `>>>`, `&`, `|`,
 - **Tradução para C#:** o programa ainda não gera código C# nem executa o
   programa analisado.
 - **Chamadas de método:** chamadas não fazem parte da gramática. Parâmetros
-  são aceitos nas assinaturas, mas ainda não têm validação semântica de escopo
-  ou uso.
+  são aceitos nas assinaturas e ficam no escopo do método.
 - **Retorno de métodos:** `return` é reconhecido pelo lexer, mas ainda não há
   produção sintática para ele.
 - **Outras estruturas de controle:** `if/else`, `for`, `do-while` e `switch`.
@@ -47,9 +46,11 @@ O lexer também reconhece operadores bit a bit (`>>`, `<<`, `>>>`, `&`, `|`,
   operadores bit a bit e atribuições dentro de expressões.
 - **Orientação a objetos completa:** herança, interfaces, polimorfismo,
   construtores, atributos e múltiplas classes por arquivo.
-- **Análise semântica:** não há verificação de tipos, escopo de variáveis ou
-  uso de identificadores. A tabela atual é uma estrutura de registro, não uma
-  validação semântica completa.
+- **Análise semântica:** cobre redeclaração, escopo de variáveis (método e
+  bloco do `while`), uso de identificadores e compatibilidade de tipos em
+  declarações, atribuições e condições. Variáveis e parâmetros não podem
+  sombrear outro nome local do mesmo método. Não há verificação de retorno nem
+  de chamadas, pois essas construções não existem na gramática.
 
 ## Exemplo de código aceito
 

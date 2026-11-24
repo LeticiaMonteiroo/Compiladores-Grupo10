@@ -1,0 +1,9 @@
+public class OutroMetodo {
+    public static void primeiro() {
+        int privada = 1;
+    }
+
+    public static void segundo() {
+        privada = 2;
+    }
+}

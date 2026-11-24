@@ -26,6 +26,7 @@ extern int yylineno;
     int    boolval;
     NoAst *no;
     const char *tnome;
+    Escopo *escopo;
 }
 
 %code {
@@ -36,7 +37,7 @@ static void inserir_simbolo(const char *nome, const char *tipo,
                             CategoriaSimbolo categoria, int linha)
 {
     if (!tabela_inserir(tabela_simbolos, nome, tipo, categoria)) {
-        if (tabela_buscar(tabela_simbolos, nome) != NULL) {
+        if (tabela_buscar_conflito(tabela_simbolos, nome, categoria) != NULL) {
             semantico_registrar_redeclaracao(linha, nome);
         } else {
             semantico_registrar_falha_insercao(linha, nome);
@@ -190,11 +191,16 @@ membro
 
 membro_metodo
     : modificadores_membro tipo_retorno IDENTIFIER
+        {
+            $<escopo>$ = tabela_entrar_escopo(tabela_simbolos, ESCOPO_METODO, $3);
+        }
       LPAREN lista_parametros_opt RPAREN
       LBRACE lista_comandos RBRACE
         {
             printf("Metodo reconhecido: %s\n", $3);
-            $$ = ast_criar_no(NO_METODO, $3, $2, $5, $8);
+            $$ = ast_criar_no(NO_METODO, $3, $2, $6, $9);
+            $$->escopo = $<escopo>4;
+            tabela_sair_escopo(tabela_simbolos);
             inserir_simbolo($3, $2, SIMBOLO_METODO, @3.first_line);
             free($3);
         }
@@ -220,11 +226,13 @@ parametro
     : tipo IDENTIFIER
         {
             $$ = ast_criar_no(NO_PARAMETRO, $2, $1, NULL, NULL);
+            inserir_simbolo($2, $1, SIMBOLO_PARAMETRO, @2.first_line);
             free($2);
         }
     | tipo LBRACKET RBRACKET IDENTIFIER
         {
             $$ = ast_criar_no(NO_PARAMETRO, $4, $1, NULL, NULL);
+            inserir_simbolo($4, $1, SIMBOLO_PARAMETRO, @4.first_line);
             free($4);
         }
     ;
@@ -287,10 +295,16 @@ comando
 /* WHILE */
 
 comando_while
-    : WHILE LPAREN expressao RPAREN LBRACE lista_comandos RBRACE
+    : WHILE LPAREN expressao RPAREN LBRACE
+        {
+            $<escopo>$ = tabela_entrar_escopo(tabela_simbolos, ESCOPO_BLOCO, NULL);
+        }
+      lista_comandos RBRACE
         {
             printf("While reconhecido\n");
-            $$ = ast_criar_no(NO_WHILE, NULL, NULL, $3, $6);
+            $$ = ast_criar_no(NO_WHILE, NULL, NULL, $3, $7);
+            $$->escopo = $<escopo>6;
+            tabela_sair_escopo(tabela_simbolos);
         }
     ;
 

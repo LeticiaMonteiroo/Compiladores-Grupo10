@@ -1,0 +1,10 @@
+public class EscopoWhileSaida {
+    public static void main(String[] args) {
+        int n = 3;
+        while (n > 0) {
+            int i = n;
+            n--;
+        }
+        int i = 5;
+    }
+}

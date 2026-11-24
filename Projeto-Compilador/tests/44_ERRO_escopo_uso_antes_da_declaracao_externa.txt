@@ -1,0 +1,10 @@
+public class UsoAntes {
+    public static void main(String[] args) {
+        boolean continuar = true;
+        while (continuar) {
+            tardia = 1;
+            continuar = false;
+        }
+        int tardia = 0;
+    }
+}
