@@ -2,16 +2,14 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <limits.h>
 #include "semantico.h"
 
-typedef struct Visivel {
-    const char *nome;
-    struct Visivel *prox;
-} Visivel;
-
 static int erros_semanticos;
-static const NoAst *metodo_atual = NULL;
-static Visivel *visiveis = NULL;
+
+static const Escopo *escopo_atual = NULL;
+
+static int ultima_ordem_declarada = INT_MAX;
 
 static const char *erro(const char *fmt, ...)
 {
@@ -37,34 +35,22 @@ void semantico_registrar_falha_insercao(int linha, const char *nome)
     erros_semanticos++;
 }
 
-static void marcar_visivel(const char *nome)
+static int eh_variavel(const Simbolo *s)
 {
-    Visivel *v = malloc(sizeof(Visivel));
-    if (!v) {
-        fprintf(stderr, "Erro: memoria insuficiente\n");
-        exit(1);
-    }
-    v->nome = nome;
-    v->prox = visiveis;
-    visiveis = v;
+    return s->categoria == SIMBOLO_VARIAVEL || s->categoria == SIMBOLO_PARAMETRO;
 }
 
-static int eh_visivel(const char *nome)
+static const Simbolo *buscar_visivel(const char *nome, const TabelaSimbolos *tabela)
 {
-    const Visivel *v;
-    for (v = visiveis; nome && v; v = v->prox) {
-        if (strcmp(v->nome, nome) == 0) return 1;
-    }
-    return 0;
+    return escopo_atual != NULL ? tabela_buscar_em(escopo_atual, nome)
+                                : tabela_buscar(tabela, nome);
 }
 
-static void limpar_visiveis(void)
+static void marcar_declarado(const char *nome, const TabelaSimbolos *tabela)
 {
-    while (visiveis) {
-        Visivel *prox = visiveis->prox;
-        free(visiveis);
-        visiveis = prox;
-    }
+    const Simbolo *s = buscar_visivel(nome, tabela);
+
+    if (s && s->ordem > ultima_ordem_declarada) ultima_ordem_declarada = s->ordem;
 }
 
 /* Retorna posto numérico (1..6) ou 0 se não for numérico */
@@ -101,22 +87,22 @@ static int pode_atribuir(const char *dest, const char *orig)
 
 static const char *resolver_identificador(const char *nome, const TabelaSimbolos *tabela)
 {
-    const NoAst *p;
-    const Simbolo *s = tabela_buscar(tabela, nome);
+    const Simbolo *s = buscar_visivel(nome, tabela);
 
-    if (!eh_visivel(nome)) {
-        if (!s) return erro("variavel '%s' usada sem ter sido declarada", nome ? nome : "?");
-        if (s->categoria != SIMBOLO_VARIAVEL)
-            return erro("'%s' e %s, nao uma variavel", nome, s->categoria == SIMBOLO_METODO ? "um metodo" : "uma classe");
+    if (!s) {
+        const Simbolo *outro = tabela_buscar_qualquer(tabela, nome);
+
+        erro("variavel '%s' usada sem ter sido declarada", nome ? nome : "?");
+        if (outro && eh_variavel(outro))
+            fprintf(stderr, "  nota: '%s' existe em outro escopo (%s), mas nao e visivel aqui\n",
+                    nome, outro->escopo && outro->escopo->rotulo ? outro->escopo->rotulo : "bloco");
+        return NULL;
+    }
+    if (!eh_variavel(s))
+        return erro("'%s' e %s, nao uma variavel", nome, s->categoria == SIMBOLO_METODO ? "um metodo" : "uma classe");
+    if (s->ordem > ultima_ordem_declarada)
         return erro("variavel '%s' usada antes de sua declaracao", nome);
-    }
-
-    for (p = metodo_atual ? metodo_atual->a : NULL; p && nome; p = p->prox) {
-        if (p->tipo_no == NO_PARAMETRO && p->nome && strcmp(p->nome, nome) == 0)
-            return p->tipo;
-    }
-
-    return (s && s->categoria == SIMBOLO_VARIAVEL) ? s->tipo : NULL;
+    return s->tipo;
 }
 
 const char *inferir_tipo_expressao(const NoAst *no, const TabelaSimbolos *tabela)
@@ -188,24 +174,25 @@ static void percorrer(const NoAst *no, const TabelaSimbolos *tabela)
                 percorrer(no->a, tabela);
                 break;
 
-            case NO_METODO:
-                limpar_visiveis();
-                metodo_atual = no;
+            case NO_METODO: {
+                const Escopo *anterior = escopo_atual;
+
+                if (no->escopo) escopo_atual = no->escopo;
                 percorrer(no->a, tabela);   /* parametros */
                 percorrer(no->b, tabela);   /* corpo */
-                metodo_atual = NULL;
-                limpar_visiveis();
+                escopo_atual = anterior;
                 break;
+            }
 
             case NO_PARAMETRO:
-                marcar_visivel(no->nome);
+                marcar_declarado(no->nome, tabela);
                 break;
 
             case NO_DECLARACAO: {
                 const char *t = inferir_tipo_expressao(no->a, tabela);
                 if (t && !pode_atribuir(no->tipo, t))
                     erro("nao e possivel inicializar '%s' (%s) com tipo '%s'", no->nome, no->tipo, t);
-                marcar_visivel(no->nome);
+                marcar_declarado(no->nome, tabela);
                 break;
             }
 
@@ -222,10 +209,14 @@ static void percorrer(const NoAst *no, const TabelaSimbolos *tabela)
             }
 
             case NO_WHILE: {
+                const Escopo *anterior = escopo_atual;
                 const char *tc = inferir_tipo_expressao(no->a, tabela);
+
                 if (tc && strcmp(tc, "boolean") != 0)
                     erro("condicao do 'while' deve ser 'boolean', recebido '%s'", tc);
+                if (no->escopo) escopo_atual = no->escopo;
                 percorrer(no->b, tabela);
+                escopo_atual = anterior;
                 break;
             }
 
@@ -256,6 +247,10 @@ int analisar_semantica(const NoAst *raiz, const TabelaSimbolos *tabela)
         erro("contexto de analise invalido");
         return erros_semanticos;
     }
+    escopo_atual = tabela->global;
+    ultima_ordem_declarada = -1;
     percorrer(raiz, tabela);
+    escopo_atual = NULL;
+    ultima_ordem_declarada = INT_MAX;
     return erros_semanticos;
 }

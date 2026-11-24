@@ -1,0 +1,13 @@
+public class EscopoAninhado {
+    public static void main(String[] args) {
+        int a = 0;
+        boolean continuar = true;
+        while (continuar) {
+            int b = a;
+            while (continuar) {
+                int soma = a + b;
+                continuar = false;
+            }
+        }
+    }
+}

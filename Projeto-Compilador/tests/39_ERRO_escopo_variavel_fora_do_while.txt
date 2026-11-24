@@ -1,0 +1,10 @@
+public class ForaDoBloco {
+    public static void main(String[] args) {
+        boolean continuar = true;
+        while (continuar) {
+            int dentro = 1;
+            continuar = false;
+        }
+        dentro = 2;
+    }
+}

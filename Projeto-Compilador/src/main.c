@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
             printf("Arvore sintatica abstrata:\n");
             ast_imprimir(ast_raiz, stdout);
             printf("Tabela de simbolos:\n");
-            tabela_imprimir(tabela_simbolos, stdout);
+            tabela_imprimir_escopos(tabela_simbolos, stdout);
         }
     }
 

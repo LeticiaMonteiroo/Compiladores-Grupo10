@@ -1,0 +1,9 @@
+public class EscopoMetodos {
+    public static void primeiro(int valor) {
+        int resultado = valor;
+    }
+
+    public static void segundo(int valor) {
+        int resultado = valor + 1;
+    }
+}

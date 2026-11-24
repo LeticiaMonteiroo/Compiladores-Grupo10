@@ -1,0 +1,5 @@
+public class LocalRepeteParametro {
+    public static void dobrar(int valor) {
+        int valor = 2;
+    }
+}

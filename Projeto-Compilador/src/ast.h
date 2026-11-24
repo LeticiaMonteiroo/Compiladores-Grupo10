@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+struct Escopo;
+
 typedef enum {
     NO_PROGRAMA,
     NO_METODO,
@@ -38,6 +40,7 @@ typedef struct NoAst {
     struct NoAst *a;     
     struct NoAst *b;     
     struct NoAst *prox;  
+    const struct Escopo *escopo; /* escopo aberto por metodo/while (nao e dono) */
 } NoAst;
 
 NoAst *ast_criar_no(TipoNo tipo_no, const char *nome, const char *tipo, NoAst *a, NoAst *b);

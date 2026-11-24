@@ -1,0 +1,4 @@
+public class ParametroDuplicado {
+    public static void somar(int a, int a) {
+    }
+}
