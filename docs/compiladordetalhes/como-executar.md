@@ -13,7 +13,7 @@ As instruções abaixo descrevem o estado atual do compilador, que faz análise 
 Para conferir se as ferramentas estão instaladas, execute `make --version`,
 `gcc --version`, `flex --version` e `bison --version` no terminal.
 
-Os comandos a seguir devem ser executados a partir da raiz do repositório, entrando primeiro na pasta do compilador:
+Para compilar e executar o compilador, entre na pasta do projeto:
 
 ```sh
 cd Projeto-Compilador
@@ -50,7 +50,7 @@ public class Exemplo {
 Também é possível fornecer um arquivo como entrada, sem iniciar o modo de digitação:
 
 ```sh
-./compilador < tests/02_metodo_simples.txt
+./compilador < tests/validos/02_metodo_simples.txt
 ```
 
 Quando a análise sintática é bem sucedida, o programa exibe a árvore
@@ -59,15 +59,25 @@ para C# nem executa o programa de entrada.
 
 ## Testar de forma automatizada
 
-Execute:
+Execute a partir da pasta `Projeto-Compilador`:
+
+```sh
+./run_tests.sh
+```
+
+O script compila o executável em `Projeto-Compilador` e roda os casos `.txt` organizados em
+`tests/validos/`, `tests/erros_sintaticos_lexicos/` e
+`tests/erros_semanticos/`. Ele valida o código de saída e, quando existem
+arquivos `.ast` ou `.err` com o mesmo nome-base, também confere as linhas
+esperadas. O placar final informa quantos casos passaram e o script retorna
+código diferente de zero se houver falhas.
+
+Para executar também os testes unitários da AST, tabela de símbolos e codegen,
+use:
 
 ```sh
 make test
 ```
-
-O alvo compila o executável e os testes unitários de AST e tabela de símbolos,
-executa esses testes e roda `tests/testes.sh` para os arquivos `.txt` da pasta
-de testes.
 
 ### O que o script verifica
 
