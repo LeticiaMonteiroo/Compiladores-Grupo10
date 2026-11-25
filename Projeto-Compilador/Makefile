@@ -40,15 +40,14 @@ run: $(TARGET)
 	./$(TARGET)
 
 ast: $(TARGET)
-	@test -n "$(ARQ)" || { echo "Uso: make ast ARQ=tests/arquivo.txt"; exit 1; }
+	@test -n "$(ARQ)" || { echo "Uso: make ast ARQ=tests/validos/arquivo.txt"; exit 1; }
 	./$(TARGET) $(ARQ)
 
 test: $(TARGET) $(UNIT_TESTS)
 	./tests/test_ast
 	./tests/test_tabela_simbolos
 	./tests/test_codegen
-	chmod +x tests/testes.sh
-	cd tests && bash ./testes.sh
+	./run_tests.sh
 
 clean:
 	rm -f $(LEX_OUT) $(PARSER_OUT_C) $(PARSER_OUT_H) $(TARGET) $(UNIT_TESTS)
