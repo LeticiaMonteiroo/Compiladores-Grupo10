@@ -31,12 +31,17 @@ Essa divisão funcionou bem para o levantamento de tokens (Sprint 2) e para a es
 
 Diante desses conflitos de integração, a decisão da equipe (conduzida por Guilherme) foi reescrever a gramática base do `parser.y` priorizando fechar uma versão **estável e sem conflitos de Bison** a tempo da entrega, em vez de tentar mesclar todas as regras sintáticas já desenvolvidas por área. Como consequência, ficaram de fora da gramática desta entrega — embora os tokens já existam no léxico — parâmetros de método, corpo de método com instruções, `return` dentro de uma produção, e o uso de operadores em expressões binárias/unárias.
 
+## Redução da meta de testes por prazo
+
+A meta de chegar a **150 testes automatizados** não foi mantida: o tempo disponível até a entrega não foi o suficiente para criar, revisar e validar esse volume sem comprometer a qualidade dos casos ou as demais tarefas de finalização. A equipe decidiu priorizar uma suíte menor, com casos representativos das funcionalidades implementadas e dos principais erros sintáticos e semânticos, em vez de perseguir uma contagem que não será alcançada.
+
 ## Metodologia de trabalho
 
 A equipe adotou Kanban para acompanhar as tarefas (colunas "Backlog", "In progress", "In review" e "Done"), com o trabalho de cada sprint dividido por área de escopo da linguagem entre os integrantes, em vez de por ferramenta (ver [Metodologia](metodologia.md) e [Planejamento](planejamento.md)).
 
 ## Histórico de Versões
 
-| Versão | Descrição                        | Autor         | Data  |
-| ------ | --------------------------------- | ------------- | ----- |
-| 1.0    | Criação da página de decisões     | Maria Eduarda | 23/09 |
+| Versão | Descrição                                      | Autor         | Data  |
+| ------ | ----------------------------------------------- | ------------- | ----- |
+| 1.0    | Criação da página de decisões                   | Maria Eduarda | 23/09 |
+| 1.1    | Registro da redução da meta de testes por prazo | Maria Eduarda | 26/11 |
