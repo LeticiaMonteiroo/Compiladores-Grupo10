@@ -1,0 +1,4 @@
+class MetodoSemTipoRetorno {
+    public metodo() {
+    }
+}

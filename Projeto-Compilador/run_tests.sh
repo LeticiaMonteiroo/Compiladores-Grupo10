@@ -18,8 +18,11 @@ aprovados=0
 reprovados=0
 arquivos=(
     tests/validos/*.txt
+    tests/validos/*.java
     tests/erros_sintaticos_lexicos/*.txt
+    tests/erros_sintaticos_lexicos/*.java
     tests/erros_semanticos/*.txt
+    tests/erros_semanticos/*.java
 )
 
 for arquivo in "${arquivos[@]}"; do
@@ -52,7 +55,8 @@ for arquivo in "${arquivos[@]}"; do
         resultado="código de saída correto"
     fi
 
-    esperado_ast="${arquivo%.txt}.ast"
+    base_arquivo="${arquivo%.*}"
+    esperado_ast="${base_arquivo}.ast"
     if [[ "$passou" -eq 1 && -f "$esperado_ast" ]]; then
         while IFS= read -r linha || [[ -n "$linha" ]]; do
             if ! grep -Fqx -- "$linha" "$saida"; then
@@ -63,7 +67,7 @@ for arquivo in "${arquivos[@]}"; do
         done < "$esperado_ast"
     fi
 
-    esperado_erro="${arquivo%.txt}.err"
+    esperado_erro="${base_arquivo}.err"
     if [[ "$passou" -eq 1 && -f "$esperado_erro" ]]; then
         while IFS= read -r linha || [[ -n "$linha" ]]; do
             if ! grep -Fqx -- "$linha" "$saida"; then
