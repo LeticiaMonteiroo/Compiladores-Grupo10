@@ -1,6 +1,8 @@
-# Como executar o projeto
+# Como compilar, executar e testar
 
-As instruções abaixo descrevem o estado atual do compilador, que faz análise léxica e sintática de um subconjunto da linguagem Java.
+Estas instruções descrevem o estado atual: análise léxica, sintática e
+semântica de um subconjunto de Java e geração parcial de C#. Para conhecer o
+fluxo e as limitações, consulte [Escopo da Linguagem](./escopo.md).
 
 ## Pré-requisitos
 
@@ -47,15 +49,34 @@ public class Exemplo {
 }
 ```
 
-Também é possível fornecer um arquivo como entrada, sem iniciar o modo de digitação:
+Para analisar um arquivo:
 
 ```sh
-./compilador < tests/validos/02_metodo_simples.txt
+./compilador tests/validos/39_hello_world.java
 ```
 
-Quando a análise sintática é bem sucedida, o programa exibe a árvore
-sintática abstrata (AST) e a tabela de símbolos. Ele ainda não traduz o código
-para C# nem executa o programa de entrada.
+Também é possível redirecionar um arquivo pela entrada padrão:
+
+```sh
+./compilador < tests/validos/39_hello_world.java
+```
+
+Se as análises sintática e semântica forem bem-sucedidas, o programa exibe a
+AST e a tabela de símbolos. Para gerar C# automaticamente com o nome da classe
+como nome do arquivo:
+
+```sh
+./compilador tests/validos/39_hello_world.java --cs
+```
+
+Ou informe o caminho de saída:
+
+```sh
+./compilador tests/validos/39_hello_world.java /tmp/HelloWorld.cs
+```
+
+A geração cobre apenas parte da linguagem e não executa o programa. Consulte
+[Escopo da Linguagem](./escopo.md) para detalhes do que é e não é traduzido.
 
 ## Testar de forma automatizada
 
@@ -65,7 +86,7 @@ Execute a partir da pasta `Projeto-Compilador`:
 ./run_tests.sh
 ```
 
-O script compila o executável em `Projeto-Compilador` e roda os casos `.txt` organizados em
+O script compila o executável e roda os casos `.txt` organizados em
 `tests/validos/`, `tests/erros_sintaticos_lexicos/` e
 `tests/erros_semanticos/`. Ele valida o código de saída e, quando existem
 arquivos `.ast` ou `.err` com o mesmo nome-base, também confere as linhas
@@ -79,15 +100,21 @@ use:
 make test
 ```
 
-### O que o script verifica
+### O que os testes verificam
 
-- Arquivos cujo nome contém `ERRO` devem ser rejeitados pelo compilador, com
-  código de saída diferente de zero.
-- Os demais arquivos devem ser aceitos, com código de saída zero.
+- Arquivos em `erros_sintaticos_lexicos/` e `erros_semanticos/` devem ser
+  rejeitados, com código de saída diferente de zero.
+- Arquivos em `validos/` devem ser aceitos, com código de saída zero.
 - Os testes unitários verificam criação, composição, liberação e impressão da
   AST, além de inserção, busca, rejeição de nomes duplicados e impressão da
   tabela de símbolos.
 - O script exibe `[OK]` ou `[FAIL]` para cada caso e, ao final, o total de
   resultados corretos.
 
-A verificação compara os códigos de saída, não o conteúdo das mensagens produzidas. Confira o resumo e procure por `[FAIL]` no resultado de `make test`.
+Na revisão desta documentação, existem 44 casos de integração e 21 casos
+unitários. A meta de 150 testes indicada no planejamento ainda não foi
+alcançada. Os arquivos `.java` são entradas do compilador deste projeto; os
+casos com erro sintático não são necessariamente programas válidos para `javac`.
+
+A suíte compara os códigos de saída e as linhas esperadas nos arquivos `.ast`
+ou `.err`, quando presentes. Confira o resumo e procure por `[FAIL]`.
