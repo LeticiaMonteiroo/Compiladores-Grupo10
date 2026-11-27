@@ -1,0 +1,6 @@
+public class VariavelRepetida {
+    public static void main() {
+        int a = 1;
+        int a = 2;
+    }
+}

@@ -1,0 +1,8 @@
+public class ParametroOutroMetodo {
+    public static void primeiro(int valor) {
+    }
+
+    public static void segundo() {
+        int x = valor;
+    }
+}

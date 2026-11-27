@@ -1,0 +1,8 @@
+public class WhileCondicaoInt {
+    public static void main() {
+        int contador = 3;
+        while (contador) {
+            contador--;
+        }
+    }
+}

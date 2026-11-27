@@ -1,0 +1,2 @@
+Erro semantico: variavel 'local' usada sem ter sido declarada
+  nota: 'local' existe em outro escopo (bloco), mas nao e visivel aqui

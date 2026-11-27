@@ -1,0 +1,6 @@
+public class NotComNumero {
+    public static void main() {
+        int n = 5;
+        boolean r = !n;
+    }
+}

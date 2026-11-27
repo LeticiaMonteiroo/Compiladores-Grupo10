@@ -1,0 +1,5 @@
+public class PrintlnNaoDeclarada {
+    public static void main() {
+        System.out.println(resultado);
+    }
+}
