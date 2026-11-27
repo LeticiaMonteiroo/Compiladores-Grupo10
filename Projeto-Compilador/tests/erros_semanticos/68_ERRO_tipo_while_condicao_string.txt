@@ -1,0 +1,8 @@
+public class WhileCondicaoString {
+    public static void main() {
+        String texto = "abc";
+        while (texto) {
+            texto = "fim";
+        }
+    }
+}

@@ -1,0 +1,7 @@
+public class SobrecargaNaoSuportada {
+    public static void mostrar(int n) {
+    }
+
+    public static void mostrar(String s) {
+    }
+}

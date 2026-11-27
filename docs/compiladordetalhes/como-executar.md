@@ -86,12 +86,17 @@ Execute a partir da pasta `Projeto-Compilador`:
 ./run_tests.sh
 ```
 
-O script compila o executável e roda os casos `.txt` organizados em
+O script compila o executável e roda os casos `.txt` e `.java` organizados em
 `tests/validos/`, `tests/erros_sintaticos_lexicos/` e
 `tests/erros_semanticos/`. Ele valida o código de saída e, quando existem
 arquivos `.ast` ou `.err` com o mesmo nome-base, também confere as linhas
-esperadas. O placar final informa quantos casos passaram e o script retorna
-código diferente de zero se houver falhas.
+esperadas.
+
+Para um caso válido que tenha um arquivo `.cs` com o mesmo nome-base, o script
+também pede ao compilador que gere o C# e compara o arquivo gerado com esse
+`.cs` esperado. Esses arquivos `.cs` são referências para conferir a saída do
+codegen, não entradas nem casos adicionais. O placar final informa quantos
+casos passaram e o script retorna código diferente de zero se houver falhas.
 
 Para executar também os testes unitários da AST, tabela de símbolos e codegen,
 use:

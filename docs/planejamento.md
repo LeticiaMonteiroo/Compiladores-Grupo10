@@ -7,7 +7,9 @@
 > Bison de outro). O resultado efetivo de cada sprint está registrado em
 > [Entrega 1 → O que foi feito](entregas/entrega1.md) para as Sprints 1 a 4 e
 > em [Entrega 2 → O que foi feito](entregas/entrega2.md) para as Sprints 5 e 6,
-> que também registra o planejamento da Sprint 7.
+> que também registra o planejamento da Sprint 7. As Sprints 8 e 9 foram
+> organizadas para a entrega final; o planejamento e as atividades realizadas
+> estão descritos abaixo e complementados em [Entrega Final](entregas/entrega-final.md).
 
 ## Sprint 1: Setup e Definição da Linguagem
 
@@ -93,3 +95,30 @@ Esta sprint teve duração maior que as anteriores e foi concluída em 22/Out.
 - **[Maria Eduarda](https://github.com/pyramidsf):** Confeccionar e revisar a documentação da Entrega 2.
 - **Todos:** Confeccionar o formulário da Entrega 2.
 - **Todos:** Preparar os slides da apresentação da Entrega 2.
+
+---
+
+## Sprint 8: Ampliação do Parser e Análise Semântica
+
+**Período:** 10/Nov a 18/Nov
+
+- **[Maria Eduarda](https://github.com/pyramidsf):** Permitiu parâmetros em métodos e implementou a validação de redeclaração de símbolos no Parser, além da estrutura base da análise semântica.
+- **[Ígor](https://github.com/igorvdaniel):** Adicionou suporte léxico e nós da AST para `System.out.print` e `println`, além das regras sintáticas para esses comandos e para a assinatura `main(String[] args)`.
+- **[Letícia](https://github.com/LeticiaMonteiroo), [Guilherme](https://github.com/GuilhermeCarvalho2024) e [Maria Luana](https://github.com/MLuana725):** Iniciaram as atividades de suas respectivas issues para a entrega na sprint seguinte.
+
+---
+
+## Sprint 9: Geração de C# e Consolidação da Entrega Final
+
+**Período:** 19/Nov a 27/Nov
+
+- **[Guilherme](https://github.com/GuilhermeCarvalho2024):** Adicionou escopos à tabela de símbolos e integrou o pipeline completo no `main.c`, atualizando o Makefile. Também atualizou parte da documentação.
+- **[Ígor](https://github.com/igorvdaniel):** Implementou o motor de inferência de tipos, colaborou na validação de tipos em declarações, atribuições, `while` e `print`, e gerou código C# para comandos e expressões. Também atualizou o README da equipe.
+- **[Letícia](https://github.com/LeticiaMonteiroo):** Adicionou parâmetros na declaração de funções.
+- **[Maria Eduarda](https://github.com/pyramidsf):** Criou a estrutura base do gerador C#, a infraestrutura e o script automatizado de testes (`run_tests.sh`), reduziu o Lote 1 para 15 novos casos léxicos e sintáticos, reduziu o Lote 3 para 15 casos válidos de tradução Java → C# e finalizou a documentação da arquitetura e o roteiro de entrega.
+- **[Maria Luana](https://github.com/MLuana725):** Implementou a verificação de variáveis não declaradas na AST, colaborou na validação de tipos e ficou responsável pelo Lote 2 de casos de análise semântica, também reduzindo o número do lote.
+
+> O período entre a Entrega 2 (9/Nov) e a entrega final (27/Nov) foi dividido
+> em dois blocos consecutivos de nove dias para organizar o trabalho. As
+> atividades realizadas e seus responsáveis estão listados acima; o registro
+> da entrega final está em [Entrega Final](entregas/entrega-final.md).
