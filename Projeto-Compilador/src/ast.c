@@ -3,9 +3,11 @@
 #include "ast.h"
 
 static const char *ROTULOS[] = {
-    "Programa", "Metodo", "Parametro", "Declaracao", "While", "Println", "Print", "Printf",
+    "Programa", "Metodo", "Parametro", "Declaracao",
+    "While", "If", "Bloco", "Println", "Print", "Printf",
     "Atribuicao", "Prefixo", "Posfixo", "Binario", "Unario",
-    "Identificador", "Int", "Double", "String", "Char", "Boolean", "Null"
+    "Identificador", "Int", "Double", "String", "Char",
+    "Boolean", "Null"
 };
 
 static void *alocar_ou_sair(void *ptr)
@@ -87,8 +89,11 @@ void ast_liberar(NoAst *no)
 
         ast_liberar(no->a);
         ast_liberar(no->b);
+        ast_liberar(no->c);
+
         free(no->nome);
         free(no);
+
         no = prox;
     }
 }

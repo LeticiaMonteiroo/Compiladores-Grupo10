@@ -154,6 +154,29 @@ static void emitir_expressao(const NoAst *no, FILE *saida)
     }
 }
 
+static void emitir_comandos(
+    const NoAst *no,
+    int nivel,
+    FILE *saida
+);
+
+static void emitir_bloco(
+    const NoAst *bloco,
+    int nivel,
+    FILE *saida
+)
+{
+    emitir_indentacao(nivel, saida);
+    fputs("{\n", saida);
+
+    if (bloco != NULL) {
+        emitir_comandos(bloco->a, nivel + 1, saida);
+    }
+
+    emitir_indentacao(nivel, saida);
+    fputs("}\n", saida);
+}
+
 static void emitir_comandos(const NoAst *no, int nivel, FILE *saida)
 {
     for (; no != NULL; no = no->prox) {
@@ -195,6 +218,19 @@ static void emitir_comandos(const NoAst *no, int nivel, FILE *saida)
                 fputs("}\n", saida);
                 break;
 
+            case NO_IF:
+                emitir_indentacao(nivel, saida);
+                fputs("if (", saida);
+                emitir_expressao(no->a, saida);
+                fputs(")\n", saida);
+                emitir_bloco(no->b, nivel, saida);
+                if (no->c != NULL) {
+                    emitir_indentacao(nivel, saida);
+                    fputs("else\n", saida);
+                    emitir_bloco(no->c, nivel, saida);
+                }
+                break;
+
             case NO_PRINTLN:
                 emitir_indentacao(nivel, saida);
                 fputs("Console.WriteLine(", saida);
@@ -229,7 +265,7 @@ static void emitir_comandos(const NoAst *no, int nivel, FILE *saida)
             default:
                 break;
         }
-    }
+}
 }
 
 static void emitir_parametros(const NoAst *parametro, FILE *saida)

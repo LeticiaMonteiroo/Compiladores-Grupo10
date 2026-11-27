@@ -11,6 +11,8 @@ typedef enum {
     NO_PARAMETRO,
     NO_DECLARACAO,
     NO_WHILE,
+    NO_IF,
+    NO_BLOCO,
     NO_PRINTLN,
     NO_PRINT,
     NO_PRINTF,
@@ -30,17 +32,21 @@ typedef enum {
 
 typedef struct NoAst {
     TipoNo tipo_no;
-    char *nome;          
-    const char *tipo;    
+    char *nome;
+    const char *tipo;
+
     union {
-        int    ival;
+        int ival;
         double dval;
-        char   cval;
+        char cval;
     } valor;
-    struct NoAst *a;     
-    struct NoAst *b;     
-    struct NoAst *prox;  
-    const struct Escopo *escopo; /* escopo aberto por metodo/while (nao e dono) */
+
+    struct NoAst *a;
+    struct NoAst *b;
+    struct NoAst *c;
+    struct NoAst *prox;
+
+    const struct Escopo *escopo;
 } NoAst;
 
 NoAst *ast_criar_no(TipoNo tipo_no, const char *nome, const char *tipo, NoAst *a, NoAst *b);
@@ -50,6 +56,7 @@ NoAst *ast_criar_int(int valor);
 NoAst *ast_criar_double(double valor);
 NoAst *ast_criar_char(char valor);
 NoAst *ast_criar_boolean(int valor);
+
 
 NoAst *ast_anexar(NoAst *lista, NoAst *novo);
 
