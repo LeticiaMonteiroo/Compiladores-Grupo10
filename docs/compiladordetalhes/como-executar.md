@@ -86,12 +86,17 @@ Execute a partir da pasta `Projeto-Compilador`:
 ./run_tests.sh
 ```
 
-O script compila o executável e roda os casos `.txt` organizados em
+O script compila o executável e roda os casos `.txt` e `.java` organizados em
 `tests/validos/`, `tests/erros_sintaticos_lexicos/` e
 `tests/erros_semanticos/`. Ele valida o código de saída e, quando existem
 arquivos `.ast` ou `.err` com o mesmo nome-base, também confere as linhas
-esperadas. O placar final informa quantos casos passaram e o script retorna
-código diferente de zero se houver falhas.
+esperadas.
+
+Para um caso válido que tenha um arquivo `.cs` com o mesmo nome-base, o script
+também pede ao compilador que gere o C# e compara o arquivo gerado com esse
+`.cs` esperado. Esses arquivos `.cs` são referências para conferir a saída do
+codegen, não entradas nem casos adicionais. O placar final informa quantos
+casos passaram e o script retorna código diferente de zero se houver falhas.
 
 Para executar também os testes unitários da AST, tabela de símbolos e codegen,
 use:
@@ -111,10 +116,11 @@ make test
 - O script exibe `[OK]` ou `[FAIL]` para cada caso e, ao final, o total de
   resultados corretos.
 
-Na revisão desta documentação, existem 44 casos de integração e 21 casos
+Na revisão desta documentação, existem 95 casos de integração e 21 casos
 unitários. A meta de 150 testes indicada no planejamento ainda não foi
 alcançada. Os arquivos `.java` são entradas do compilador deste projeto; os
 casos com erro sintático não são necessariamente programas válidos para `javac`.
 
-A suíte compara os códigos de saída e as linhas esperadas nos arquivos `.ast`
-ou `.err`, quando presentes. Confira o resumo e procure por `[FAIL]`.
+A suíte compara os códigos de saída e, quando há arquivos esperados, o conteúdo
+da AST (`.ast`), das mensagens de erro (`.err`) e do código C# gerado (`.cs`).
+Confira o resumo e procure por `[FAIL]`.
