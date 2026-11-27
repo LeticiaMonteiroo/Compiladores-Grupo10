@@ -57,8 +57,11 @@ for arquivo in "${arquivos[@]}"; do
 
     base_arquivo="${arquivo%.*}"
     esperado_ast="${base_arquivo}.ast"
+
     if [[ "$passou" -eq 1 && -f "$esperado_ast" ]]; then
         while IFS= read -r linha || [[ -n "$linha" ]]; do
+            linha="${linha%$'\r'}"
+
             if ! grep -Fqx -- "$linha" "$saida"; then
                 passou=0
                 resultado="linha de AST ausente: '$linha'"
@@ -68,8 +71,11 @@ for arquivo in "${arquivos[@]}"; do
     fi
 
     esperado_erro="${base_arquivo}.err"
+
     if [[ "$passou" -eq 1 && -f "$esperado_erro" ]]; then
         while IFS= read -r linha || [[ -n "$linha" ]]; do
+            linha="${linha%$'\r'}"
+
             if ! grep -Fqx -- "$linha" "$saida"; then
                 passou=0
                 resultado="mensagem de erro ausente: '$linha'"
