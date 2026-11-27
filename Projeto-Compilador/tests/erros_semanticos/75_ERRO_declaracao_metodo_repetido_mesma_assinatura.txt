@@ -1,0 +1,7 @@
+public class MetodoRepetido {
+    public static int somar(int a, int b) {
+    }
+
+    public static int somar(int a, int b) {
+    }
+}

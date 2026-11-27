@@ -232,6 +232,7 @@ parametro
     | tipo LBRACKET RBRACKET IDENTIFIER
         {
             $$ = ast_criar_no(NO_PARAMETRO, $4, $1, NULL, NULL);
+            $$->valor.ival = 1;
             inserir_simbolo($4, $1, SIMBOLO_PARAMETRO, @4.first_line);
             free($4);
         }

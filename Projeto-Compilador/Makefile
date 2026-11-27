@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Wall -I. -Isrc
+CFLAGS = -Wall -Wextra -I. -Isrc
 LDLIBS =
 
 LEXER_SRC = lexer/lexer.l
@@ -15,7 +15,7 @@ PARSER_OUT_H = parser.tab.h
 TARGET = compilador
 UNIT_TESTS = tests/test_ast tests/test_tabela_simbolos tests/test_codegen
 
-.PHONY: all run ast test clean
+.PHONY: all run ast test memcheck clean
 
 all: $(TARGET)
 
@@ -49,6 +49,10 @@ test: $(TARGET) $(UNIT_TESTS)
 	./tests/test_tabela_simbolos
 	./tests/test_codegen
 	./run_tests.sh
+	./tests/test_cli.sh
+
+memcheck: $(TARGET)
+	./tests/memcheck.sh
 
 clean:
 	rm -f $(LEX_OUT) $(PARSER_OUT_C) $(PARSER_OUT_H) $(TARGET) $(UNIT_TESTS)

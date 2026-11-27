@@ -31,6 +31,7 @@ nav:
   - Entregas:
       - Entrega 1: entregas/entrega1.md
       - Entrega 2: entregas/entrega2.md
+      - Entrega Final: entregas/entrega-final.md
 
 theme:
   name: material

@@ -1,0 +1,6 @@
+public class IntRecebeString {
+    public static void main() {
+        int idade = 18;
+        idade = "dezoito";
+    }
+}

@@ -1,0 +1,5 @@
+public class IntRecebeDouble {
+    public static void main() {
+        int total = 3.14;
+    }
+}

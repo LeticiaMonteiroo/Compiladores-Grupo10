@@ -1,0 +1,6 @@
+public class AritmeticaComBoolean {
+    public static void main() {
+        boolean flag = true;
+        int r = flag * 2;
+    }
+}
