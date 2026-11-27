@@ -1,0 +1,18 @@
+        Console.Write("a");
+        Console.Write(1);
+        Console.Write('c');
+        Console.WriteLine();
+        Console.WriteLine("linha");
+        Console.WriteLine(n * 2);
+        Console.WriteLine("n=" + n);
+        Console.WriteLine("nome=" + nome + " n=" + n);
+        Console.Write("{0}-{1}\n", n, n + 1);
+        Console.Write("{0} tem {1} anos\n", nome, 20);
+        Console.Write("{0,5}|{1,-5}|\n", n, n);
+        Console.Write("{0:F2}\n", 3.14159);
+        Console.Write("{0:x} {1:X}\n", 255, 255);
+        Console.Write("100%\n");
+        Console.Write("{chaves}\n");
+        Console.Write("{{{0}}}\n", n);
+        Console.Write("{0}{1}\n", 'o', 'k');
+        Console.Write("{0} {1}\n", true.ToString().ToLower(), (1 > 2).ToString().ToLower());
