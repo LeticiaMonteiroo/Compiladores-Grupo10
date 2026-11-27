@@ -19,22 +19,22 @@ Este projeto implementa um compilador focado na tradução de um subconjunto da 
 
 ### 1. Compilando o Compilador
 
-Acesse o diretório do projeto e utilize o `Makefile` para gerar o executável `compilador`[cite: 5]:
+Acesse o diretório do projeto e utilize o `Makefile` para gerar o executável `compilador`:
 
 ```bash
 cd Projeto-Compilador
 make
 ```
 
-*(Caso precise limpar os binários e arquivos gerados anteriormente pelo Flex/Bison, execute `make clean && make`)[cite: 5].*
+*(Caso precise limpar os binários e arquivos gerados anteriormente pelo Flex/Bison, execute `make clean && make`.)*
 
 ---
 
 ### 2. Executando o Compilador
 
-O compilador pode ser utilizado tanto apenas para validação (léxica, sintática e semântica) quanto para traduzir código Java para C#[cite: 2, 4]:
+O compilador pode ser utilizado tanto apenas para validação (léxica, sintática e semântica) quanto para traduzir código Java para C#:
 
-* **Apenas validar um arquivo Java (exibe a AST e a Tabela de Símbolos)[cite: 4]:**
+* **Apenas validar um arquivo Java (exibe a AST e a Tabela de Símbolos):**
   ```bash
   ./compilador caminho/do/Arquivo.java
   ```
@@ -49,7 +49,7 @@ O compilador pode ser utilizado tanto apenas para validação (léxica, sintáti
   ./compilador caminho/do/Arquivo.java caminho/de/saida.cs
   ```
 
-* **Entrada via terminal (`stdin`)[cite: 4]:**
+* **Entrada via terminal (`stdin`):**
   ```bash
   ./compilador < caminho/do/Arquivo.java
   ```
@@ -58,7 +58,7 @@ O compilador pode ser utilizado tanto apenas para validação (léxica, sintáti
 
 ### 3. Executando a Suíte de Testes
 
-Para rodar todos os testes automatizados (unitários e de integração)[cite: 5]:
+Para rodar todos os testes automatizados (unitários e de integração):
 
 ```bash
 make test

@@ -44,7 +44,8 @@
 | --------------------- | -------- |
 | `boolean` | `bool` |
 | `String` | `string` |
-| `byte`, `short`, `int`, `long`, `float`, `double`, `char`, `void` | Mantido sem alteração |
+| `byte` | `sbyte` |
+| `short`, `int`, `long`, `float`, `double`, `char`, `void` | Mantido sem alteração |
 
 `System.out.println` é traduzido para `Console.WriteLine`, `System.out.print`
 para `Console.Write` e as formas reconhecidas de `printf` para `Console.Write`.
