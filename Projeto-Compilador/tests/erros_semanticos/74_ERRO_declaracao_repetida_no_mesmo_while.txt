@@ -1,0 +1,10 @@
+public class RepetidaNoWhile {
+    public static void main() {
+        boolean ok = true;
+        while (ok) {
+            int i = 0;
+            int i = 1;
+            ok = false;
+        }
+    }
+}

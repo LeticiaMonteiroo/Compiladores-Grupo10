@@ -1,0 +1,2 @@
+Erro semantico: variavel 'valor' usada sem ter sido declarada
+  nota: 'valor' existe em outro escopo (primeiro), mas nao e visivel aqui

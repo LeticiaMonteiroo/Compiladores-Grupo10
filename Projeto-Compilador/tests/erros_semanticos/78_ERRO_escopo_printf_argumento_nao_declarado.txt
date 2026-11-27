@@ -1,0 +1,5 @@
+public class PrintfNaoDeclarado {
+    public static void main() {
+        printf("valor: %d", valor);
+    }
+}

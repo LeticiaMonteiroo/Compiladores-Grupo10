@@ -1,0 +1,5 @@
+public class InicializacaoNaoDeclarada {
+    public static void main() {
+        int a = b + 1;
+    }
+}

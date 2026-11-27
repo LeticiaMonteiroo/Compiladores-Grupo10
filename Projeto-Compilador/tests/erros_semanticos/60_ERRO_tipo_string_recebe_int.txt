@@ -1,0 +1,5 @@
+public class StringRecebeInt {
+    public static void main() {
+        String nome = 10;
+    }
+}

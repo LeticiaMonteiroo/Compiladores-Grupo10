@@ -1,0 +1,7 @@
+public class OrComInt {
+    public static void main() {
+        int n = 5;
+        boolean b = true;
+        boolean r = n || b;
+    }
+}

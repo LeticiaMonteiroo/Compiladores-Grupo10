@@ -1,0 +1,1 @@
+Erro semantico: operador logico '&&' exige operandos 'boolean' (recebido 'int' e 'int')

@@ -1,0 +1,13 @@
+public class WhileIrmao {
+    public static void main() {
+        boolean ok = true;
+        while (ok) {
+            int local = 1;
+            ok = false;
+        }
+        while (ok) {
+            local = 2;
+            ok = false;
+        }
+    }
+}
