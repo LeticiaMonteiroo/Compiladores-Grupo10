@@ -557,11 +557,12 @@ static void emitir_comandos(const NoAst *no, int nivel, const ContextoBloco *pai
                 fputs("if (", saida);
                 emitir_expressao(no->a, saida);
                 fputs(")\n", saida);
-                emitir_bloco(no->b, nivel, saida);
+                emitir_bloco(no->b, nivel, &ctx, saida);
+
                 if (no->c != NULL) {
                     emitir_indentacao(nivel, saida);
                     fputs("else\n", saida);
-                    emitir_bloco(no->c, nivel, saida);
+                    emitir_bloco(no->c, nivel, &ctx, saida);
                 }
                 break;
 
