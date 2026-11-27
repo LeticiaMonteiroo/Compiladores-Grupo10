@@ -1,0 +1,11 @@
+public class TesteIfElse {
+    public static void main() {
+        int idade = 16;
+
+        if (idade >= 18) {
+            System.out.println("Maior de idade");
+        } else {
+            System.out.println("Menor de idade");
+        }
+    }
+}
