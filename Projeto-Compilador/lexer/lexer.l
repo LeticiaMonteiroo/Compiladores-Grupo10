@@ -4,10 +4,14 @@
 #include <string.h>
 
 #define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno;
+
+int erros_lexicos = 0;
 %}
 
 %option noyywrap
 %option yylineno
+%option noinput
+%option nounput
 
 %%
 
@@ -55,7 +59,22 @@
 [0-9]+                  { yylval.ival = atoi(yytext); return INT_LITERAL; }
 
 \"([^\"\\]|\\.)*\"      { yylval.sval = strdup(yytext); return STRING_LITERAL; }
-\'([^\'\\]|\\.)\'       { yylval.cval = yytext[1]; return CHAR_LITERAL; }
+\'([^\'\\]|\\.)\'       {
+                            if (yytext[1] == '\\') {
+                                switch (yytext[2]) {
+                                    case 'n': yylval.cval = '\n'; break;
+                                    case 't': yylval.cval = '\t'; break;
+                                    case 'r': yylval.cval = '\r'; break;
+                                    case 'b': yylval.cval = '\b'; break;
+                                    case 'f': yylval.cval = '\f'; break;
+                                    case '0': yylval.cval = '\0'; break;
+                                    default:  yylval.cval = yytext[2]; break;
+                                }
+                            } else {
+                                yylval.cval = yytext[1];
+                            }
+                            return CHAR_LITERAL;
+                        }
 
 
   /* Identificadores */
@@ -133,11 +152,11 @@
   /* Caractere inválido */
 
 .                       {
-                            printf(
-                                "Caractere inválido: %s (linha %d)\n",
-                                yytext,
-                                yylineno
+                            fprintf(
+                                stderr,
+                                "Erro lexico (linha %d): caractere invalido '%s'\n",
+                                yylineno,
+                                yytext
                             );
+                            erros_lexicos++;
                         }
-
-%%

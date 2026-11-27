@@ -107,20 +107,45 @@ make test
 
 ### O que os testes verificam
 
-- Arquivos em `erros_sintaticos_lexicos/` e `erros_semanticos/` devem ser
-  rejeitados, com código de saída diferente de zero.
-- Arquivos em `validos/` devem ser aceitos, com código de saída zero.
-- Os testes unitários verificam criação, composição, liberação e impressão da
-  AST, além de inserção, busca, rejeição de nomes duplicados e impressão da
-  tabela de símbolos.
-- O script exibe `[OK]` ou `[FAIL]` para cada caso e, ao final, o total de
-  resultados corretos.
+A suíte tem quatro camadas, todas executadas por `make test`:
 
-Na revisão desta documentação, existem 95 casos de integração e 21 casos
-unitários. A meta de 150 testes indicada no planejamento ainda não foi
-alcançada. Os arquivos `.java` são entradas do compilador deste projeto; os
-casos com erro sintático não são necessariamente programas válidos para `javac`.
+| Camada | Arquivo | O que verifica |
+|---|---|---|
+| Unitários | `tests/test_ast.c`, `tests/test_tabela_simbolos.c`, `tests/test_codegen.c` | AST, tabela de símbolos e o gerador de C# (precedência, `printf`, escopo, identificadores, tipos, robustez) |
+| Integração | `run_tests.sh` | Cada entrada de `tests/validos/`, `tests/erros_sintaticos_lexicos/` e `tests/erros_semanticos/` |
+| Linha de comando | `tests/test_cli.sh` | Quando o `.cs` é (ou não é) gerado, códigos de saída, arquivos preexistentes, falhas de E/S |
+| Memória | `tests/memcheck.sh` (`make memcheck`) | Valgrind em todas as entradas: sem vazamentos nem acessos inválidos |
 
-A suíte compara os códigos de saída e, quando há arquivos esperados, o conteúdo
-da AST (`.ast`), das mensagens de erro (`.err`) e do código C# gerado (`.cs`).
-Confira o resumo e procure por `[FAIL]`.
+Para cada entrada em `validos/`, o `run_tests.sh` gera o arquivo C# e confere,
+quando existirem arquivos com o mesmo nome-base:
+
+| Arquivo | Verificação |
+|---|---|
+| `.ast` | linhas que devem aparecer na saída do compilador |
+| `.cs` | linhas que devem aparecer **exatamente** no C# gerado |
+| `.cs.proibido` | trechos que **não** podem aparecer no C# gerado (ex.: comentários) |
+| `.saida` | saída esperada do programa C# quando executado (escrita a partir da semântica do Java) |
+
+Se o `mcs` estiver instalado (`sudo apt install mono-mcs`), o C# gerado também
+precisa compilar; com o `mono`, os casos com `.saida` são executados e a saída é
+comparada byte a byte. Sem essas ferramentas, essas etapas são puladas com um
+`[AVISO]`. Entradas com erro léxico, sintático ou semântico não podem gerar
+arquivo C#.
+
+Na revisão desta documentação: 62 casos unitários e 45 verificações de linha de
+comando; entre as entradas válidas, 23 têm `.cs` esperado e 15 têm execução
+comparada (`.saida`). Os totais de integração e de memória variam conforme os
+casos existentes nas pastas de teste: o `make test` e o `make memcheck`
+imprimem o resultado final. A meta de 150 testes indicada no planejamento ainda
+não foi alcançada. Os arquivos `.java` são entradas do compilador deste
+projeto; os casos com erro sintático não são necessariamente programas válidos
+para `javac`.
+
+### Diferenças conhecidas entre Java e o C# gerado
+
+Estas diferenças de comportamento em tempo de execução ainda não são tratadas:
+
+- `double` impresso por `println`: o Java escreve `1.0`; o C# escreve `1`. A
+  cultura do sistema também define o separador decimal no C# (`9,5` em pt-BR).
+- Modificadores `private`, `protected` e `static` de métodos que não são `main`
+  não são preservados (ver `escopo.md`).

@@ -1,0 +1,13 @@
+        Console.WriteLine((a + b) * c);
+        Console.WriteLine(a - (b - c));
+        Console.WriteLine(a - b - c);
+        Console.WriteLine(a / (b * c));
+        Console.WriteLine(a * (b * c));
+        Console.WriteLine(a % (b + c));
+        Console.WriteLine(-(a + b));
+        Console.WriteLine(a - -b);
+        Console.WriteLine(-(-a));
+        Console.WriteLine(-(--a));
+        Console.WriteLine("x" + (1 + 2));
+        Console.WriteLine("x" + 1 + 2);
+        Console.WriteLine("x" + (a - b));
