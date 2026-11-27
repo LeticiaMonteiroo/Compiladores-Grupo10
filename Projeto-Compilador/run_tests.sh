@@ -105,6 +105,8 @@ for arquivo in "${arquivos[@]}"; do
             esperado_cs="${base_arquivo}.cs"
             if [[ -f "$esperado_cs" ]]; then
                 while IFS= read -r linha || [[ -n "$linha" ]]; do
+                    linha="${linha%$'\r'}"
+
                     if ! grep -Fqx -- "$linha" "$cs_gerado"; then
                         passou=0
                         resultado="linha de C# ausente: '$linha'"
@@ -112,9 +114,12 @@ for arquivo in "${arquivos[@]}"; do
                     fi
                 done < "$esperado_cs"
             fi
+
             proibido_cs="${base_arquivo}.cs.proibido"
             if [[ "$passou" -eq 1 && -f "$proibido_cs" ]]; then
                 while IFS= read -r linha || [[ -n "$linha" ]]; do
+                    linha="${linha%$'\r'}"
+
                     if grep -Fq -- "$linha" "$cs_gerado"; then
                         passou=0
                         resultado="trecho proibido presente no C#: '$linha'"
@@ -122,12 +127,14 @@ for arquivo in "${arquivos[@]}"; do
                     fi
                 done < "$proibido_cs"
             fi
+
             if [[ "$passou" -eq 1 && -n "$csc" ]]; then
                 if ! "$csc" -target:library -out:"$dir_cs/saida.dll" "$cs_gerado" >"$dir_cs/csc.log" 2>&1; then
                     passou=0
                     resultado="o C# gerado não compila: $(grep -m1 'error' "$dir_cs/csc.log")"
                 fi
             fi
+
             esperado_saida="${base_arquivo}.saida"
             if [[ "$passou" -eq 1 && -f "$esperado_saida" ]]; then
                 if [[ -z "$csc" || -z "$runtime" ]]; then
