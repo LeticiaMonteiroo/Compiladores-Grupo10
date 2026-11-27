@@ -1,4 +1,4 @@
-# Entrega Final — Esqueleto de registro
+# Entrega Final — Relatório de implementação
 
 **Data de entrega:** 27/Nov  
 **Período coberto:** 10/Nov a 27/Nov  
@@ -34,38 +34,38 @@
 
 ### Atividades realizadas
 
-- **Guilherme:** adicionou escopos à tabela de símbolos e integrou o pipeline completo no `main.c`, atualizando o Makefile. Também atualizou parte da documentação
-- **Igor:** implementou o motor de inferência de tipos, colaborou na validação de tipos em declarações, atribuições, `while` e `print` e gerou código C# para comandos e expressões. Também tualizou o README da equipe. 
-- **Letícia:** adicionou parâmetros na declaração de funções.
+- **Guilherme:** adicionou escopos à tabela de símbolos e integrou o pipeline completo no `main.c`, atualizando o Makefile. Também atualizou parte da documentação.
+- **Igor:** implementou o motor de inferência de tipos, colaborou na validação de tipos em declarações, atribuições, `while` e `print` e gerou código C# para comandos e expressões. Também atualizou o README da equipe.
+- **Letícia:** adicionou parâmetros na declaração de métodos.
 - **Maria Eduarda:** criou a estrutura base do gerador C#, a infraestrutura e o script automatizado de testes (`run_tests.sh`), reduziu o Lote 1 para 15 novos casos léxicos e sintáticos, reduziu o Lote 3 para 15 casos válidos de tradução Java → C# e finalizou a documentação da arquitetura e o roteiro de entrega.
 - **Maria Luana:** implementou a verificação de variáveis não declaradas na AST, colaborou na validação de tipos e ficou responsável pelo Lote 2 de casos de análise semântica, também reduzindo o número do lote.
 
 
 ## Panorama técnico desde a Entrega 2
 
-O histórico do repositório e os artefatos atuais apontam estas frentes como
-base para completar o relato. Confirmem o escopo, a autoria e o estado final de
-cada item antes da apresentação:
+Este panorama resume as funcionalidades registradas no código e na suíte de
+testes desta versão. As atividades e atribuições individuais acima seguem o
+registro do grupo:
 
 - **Parser e AST:** suporte ampliado para parâmetros de métodos, impressão,
   representação hierárquica da AST e construções já descritas em
   [Escopo](../compiladordetalhes/escopo.md).
 - **Análise semântica:** módulos e verificações para redeclaração, uso de variáveis, inferência e compatibilidade de tipos e visibilidade entre escopos.
-- **Geração de C#:** estrutura de codegen para emitir código do subconjunto reconhecido, incluindo declarações, expressões, atribuições, `while` e comandos de impressão. A tradução continua parcial; registrar limitações confirmadas na versão entregue.
-- **Testes e automação:** testes unitários para AST, tabela de símbolos e codegen; testes de integração; e script para executar a suíte. Na branch de trabalho desta página, há 95 casos de integração e 21 casos unitários. A meta original de 150 testes foi reduzida por limite de tempo, conforme [Decisões de Projeto](../decisoes.md).
-- **Documentação e entrega:** instruções de compilação e uso, escopo do compilador, decisões, materiais de apresentação e preparação da versão/tag final. Preencher o estado efetivamente alcançado.
+- **Geração de C#:** o codegen emite código para o subconjunto descrito em [Escopo](../compiladordetalhes/escopo.md); não é uma tradução completa de Java.
+- **Testes e automação:** a suíte contém 121 casos de integração, 62 verificações unitárias (7 da AST, 11 da tabela de símbolos e 44 do codegen) e 45 verificações de linha de comando. Há 38 referências `.cs` e 15 saídas `.saida`. A meta original de 150 testes foi reduzida por limite de tempo, conforme [Decisões de Projeto](../decisoes.md).
+- **Documentação e entrega:** o repositório contém instruções de compilação e uso, escopo do compilador, decisões de projeto e registros das entregas.
 
 
 ## Resultado final
 
 | Área | Status na entrega |
 | ---- | ----------------- |
-| Análise léxica e sintática | OK |
-| AST e tabela de símbolos | OK |
-| Análise semântica | OK |
-| Geração de C# | OK |
-| Testes e integração contínua | OK |
-| Documentação e materiais | OK |
+| Análise léxica e sintática | Implementada para o subconjunto descrito em Escopo |
+| AST e tabela de símbolos | Implementadas e cobertas por testes unitários |
+| Análise semântica | Implementada para redeclarações, escopos e tipos descritos em Escopo |
+| Geração de C# | Parcial; cobre o subconjunto descrito em Escopo |
+| Testes | 121 casos de integração, 62 verificações unitárias e 45 de linha de comando |
+| CI | Workflow configurado para executar `make test` e `make memcheck` no Ubuntu |
 
 
 ## Artefatos da entrega

@@ -15,6 +15,14 @@ fluxo e as limitações, consulte [Escopo da Linguagem](./escopo.md).
 Para conferir se as ferramentas estão instaladas, execute `make --version`,
 `gcc --version`, `flex --version` e `bison --version` no terminal.
 
+Para compilar e executar os testes de C# gerado, também são necessários
+`mcs`, `mono` e o comando GNU `timeout` (fornecido pelo pacote `coreutils`).
+Em Debian ou Ubuntu, instale-os com:
+
+```sh
+sudo apt install mono-mcs mono-runtime coreutils
+```
+
 Para compilar e executar o compilador, entre na pasta do projeto:
 
 ```sh
@@ -122,30 +130,36 @@ quando existirem arquivos com o mesmo nome-base:
 | Arquivo | Verificação |
 |---|---|
 | `.ast` | linhas que devem aparecer na saída do compilador |
-| `.cs` | linhas que devem aparecer **exatamente** no C# gerado |
+| `.cs` | linhas que devem aparecer exatamente no C# gerado; nos casos `*_codegen_*`, o arquivo inteiro também é comparado |
 | `.cs.proibido` | trechos que **não** podem aparecer no C# gerado (ex.: comentários) |
 | `.saida` | saída esperada do programa C# quando executado (escrita a partir da semântica do Java) |
 
-Se o `mcs` estiver instalado (`sudo apt install mono-mcs`), o C# gerado também
-precisa compilar; com o `mono`, os casos com `.saida` são executados e a saída é
-comparada byte a byte. Sem essas ferramentas, essas etapas são puladas com um
-`[AVISO]`. Entradas com erro léxico, sintático ou semântico não podem gerar
-arquivo C#.
+Com `mcs`, o C# gerado também precisa compilar; com `mono` e `timeout`, os
+casos com `.saida` são executados e a saída é comparada byte a byte. Sem
+`mcs`/`mono`, as etapas correspondentes são puladas com um `[AVISO]`; se esses
+dois estiverem disponíveis mas faltar `timeout`, a execução dos casos `.saida`
+falha. Entradas com erro léxico, sintático ou semântico não podem gerar arquivo
+C#.
 
-Na revisão desta documentação: 62 casos unitários e 45 verificações de linha de
-comando; entre as entradas válidas, 23 têm `.cs` esperado e 15 têm execução
-comparada (`.saida`). Os totais de integração e de memória variam conforme os
-casos existentes nas pastas de teste: o `make test` e o `make memcheck`
-imprimem o resultado final. A meta de 150 testes indicada no planejamento ainda
-não foi alcançada. Os arquivos `.java` são entradas do compilador deste
-projeto; os casos com erro sintático não são necessariamente programas válidos
-para `javac`.
+Na revisão desta documentação, a suíte tem 121 casos de integração, 62
+verificações unitárias (7 da AST, 11 da tabela de símbolos e 44 do codegen) e
+45 verificações de linha de comando. Entre as entradas válidas, 38 têm `.cs`
+esperado e 15 têm execução comparada (`.saida`). Os totais podem mudar quando
+os casos forem alterados; `make test` e `make memcheck` imprimem seus
+resultados. A meta de 150 testes indicada no planejamento não foi
+alcançada. Os arquivos `.java` são entradas do compilador deste projeto; os
+casos com erro sintático não são necessariamente programas válidos para
+`javac`.
 
 ### Diferenças conhecidas entre Java e o C# gerado
 
 Estas diferenças de comportamento em tempo de execução ainda não são tratadas:
 
-- `double` impresso por `println`: o Java escreve `1.0`; o C# escreve `1`. A
-  cultura do sistema também define o separador decimal no C# (`9,5` em pt-BR).
+- `double` impresso por `println`: o Java escreve `1.0`; o C# escreve `1`.
+  Tanto `println` quanto `printf` podem usar no C# o separador decimal da
+  cultura do sistema (por exemplo, `9,5` em pt-BR), enquanto os arquivos
+  `.saida` esperam ponto. Em macOS com Mono e cultura `pt_BR`, isso pode fazer
+  falhar `93_tipos_primitivos` e `97_impressao_variada`, mesmo com `LC_ALL=C`
+  definido pelo script.
 - Modificadores `private`, `protected` e `static` de métodos que não são `main`
   não são preservados (ver `escopo.md`).

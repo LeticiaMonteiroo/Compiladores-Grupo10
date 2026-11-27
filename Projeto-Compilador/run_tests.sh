@@ -39,6 +39,10 @@ arquivos=(
 for arquivo in "${arquivos[@]}"; do
     [[ -f "$arquivo" ]] || continue
     total=$((total + 1))
+    base_arquivo="${arquivo%.*}"
+    esperado_csharp="${base_arquivo}.cs"
+    cs_gerado="$dir_cs/saida.cs"
+    rm -f "$cs_gerado"
 
     case "$arquivo" in
         tests/validos/*)
@@ -49,7 +53,13 @@ for arquivo in "${arquivos[@]}"; do
             ;;
     esac
 
-    if ./compilador "$arquivo" >"$saida" 2>&1; then
+    if [[ "$esperado" == "sucesso" ]]; then
+        if ./compilador "$arquivo" "$cs_gerado" >"$saida" 2>&1; then
+            codigo=0
+        else
+            codigo=$?
+        fi
+    elif ./compilador "$arquivo" >"$saida" 2>&1; then
         codigo=0
     else
         codigo=$?
@@ -66,7 +76,6 @@ for arquivo in "${arquivos[@]}"; do
         resultado="código de saída correto"
     fi
 
-    base_arquivo="${arquivo%.*}"
     esperado_ast="${base_arquivo}.ast"
 
     if [[ "$passou" -eq 1 && -f "$esperado_ast" ]]; then
@@ -95,10 +104,8 @@ for arquivo in "${arquivos[@]}"; do
         done < "$esperado_erro"
     fi
 
-    cs_gerado="$dir_cs/saida.cs"
-    rm -f "$cs_gerado"
     if [[ "$passou" -eq 1 && "$esperado" == "sucesso" ]]; then
-        if ! ./compilador "$arquivo" "$cs_gerado" >/dev/null 2>&1 || [[ ! -s "$cs_gerado" ]]; then
+        if [[ ! -s "$cs_gerado" ]]; then
             passou=0
             resultado="o compilador não gerou o arquivo C#"
         else
@@ -114,7 +121,11 @@ for arquivo in "${arquivos[@]}"; do
                     fi
                 done < "$esperado_cs"
             fi
-
+            if [[ "$passou" -eq 1 && "$arquivo" == *"_codegen_"* && -f "$esperado_csharp" ]] &&
+                ! cmp -s "$esperado_csharp" "$cs_gerado"; then
+                passou=0
+                resultado="código C# gerado difere do esperado"
+            fi
             proibido_cs="${base_arquivo}.cs.proibido"
             if [[ "$passou" -eq 1 && -f "$proibido_cs" ]]; then
                 while IFS= read -r linha || [[ -n "$linha" ]]; do
@@ -166,11 +177,14 @@ for arquivo in "${arquivos[@]}"; do
         reprovados=$((reprovados + 1))
         printf '[FAIL] %s - %s\n' "$arquivo" "$resultado"
         sed 's/^/       /' "$saida"
+        if [[ "$resultado" == "código C# gerado difere do esperado" ]]; then
+            diff -u "$esperado_csharp" "$cs_gerado" || true
+        fi
     fi
 done
 
 if [[ "$total" -eq 0 ]]; then
-    echo "[FAIL] Nenhum teste .txt foi encontrado."
+    echo "[FAIL] Nenhum arquivo de teste .txt ou .java foi encontrado."
     exit 1
 fi
 
