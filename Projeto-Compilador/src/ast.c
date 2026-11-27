@@ -156,8 +156,22 @@ static void imprimir_grupo(const char *titulo, const NoAst *lista, const char *p
     free(prefixo_filhos);
 }
 
+
 static void imprimir_filhos(const NoAst *pai, const char *prefixo, FILE *saida)
 {
+    if (pai->tipo_no == NO_IF) {
+        int tem_senao = pai->c != NULL;
+
+        imprimir_grupo("Condicao", pai->a, prefixo, 0, saida);
+        imprimir_grupo("Entao", pai->b, prefixo, !tem_senao, saida);
+
+        if (tem_senao) {
+            imprimir_grupo("Senao", pai->c, prefixo, 1, saida);
+        }
+
+        return;
+    }
+
     if (pai->tipo_no == NO_WHILE) {
         imprimir_grupo("Condicao", pai->a, prefixo, pai->b == NULL, saida);
         if (pai->b != NULL) {
@@ -165,9 +179,11 @@ static void imprimir_filhos(const NoAst *pai, const char *prefixo, FILE *saida)
         }
         return;
     }
+
     imprimir_lista(pai->a, prefixo, pai->b == NULL, saida);
     imprimir_lista(pai->b, prefixo, 1, saida);
 }
+
 
 void ast_imprimir(const NoAst *no, FILE *saida)
 {

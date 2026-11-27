@@ -483,6 +483,7 @@ static void emitir_comandos(
 static void emitir_bloco(
     const NoAst *bloco,
     int nivel,
+    const ContextoBloco *pai,
     FILE *saida
 )
 {
@@ -490,7 +491,7 @@ static void emitir_bloco(
     fputs("{\n", saida);
 
     if (bloco != NULL) {
-        emitir_comandos(bloco->a, nivel + 1, NULL, saida);
+        emitir_comandos(bloco->a, nivel + 1, pai, saida);
     }
 
     emitir_indentacao(nivel, saida);
