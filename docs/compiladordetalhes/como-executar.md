@@ -127,10 +127,11 @@ comparada byte a byte. Sem essas ferramentas, essas etapas são puladas com um
 `[AVISO]`. Entradas com erro léxico, sintático ou semântico não podem gerar
 arquivo C#.
 
-Na revisão desta documentação: 62 casos unitários e 86 de integração (51
-entradas válidas e 35 com erro). Entre as válidas, 23 têm `.cs` esperado e 15
-têm execução comparada (`.saida`). Há ainda 45 verificações de linha de comando
-e 86 execuções de memória. A meta de 150 testes indicada no planejamento ainda
+Na revisão desta documentação: 62 casos unitários e 45 verificações de linha de
+comando; entre as entradas válidas, 23 têm `.cs` esperado e 15 têm execução
+comparada (`.saida`). Os totais de integração e de memória variam conforme os
+casos existentes nas pastas de teste: o `make test` e o `make memcheck`
+imprimem o resultado final. A meta de 150 testes indicada no planejamento ainda
 não foi alcançada. Os arquivos `.java` são entradas do compilador deste
 projeto; os casos com erro sintático não são necessariamente programas válidos
 para `javac`.
