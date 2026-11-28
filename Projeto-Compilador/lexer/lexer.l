@@ -29,6 +29,8 @@ int erros_lexicos = 0;
 "void"                  { return VOID; }
 "return"                { return RETURN; }
 "while"                 { return WHILE; }
+"if"                    { return IF; }
+"else"                  { return ELSE; }
 "printf"                { return PRINTF; }
 "System"                { return SYSTEM; }
 "out"                   { return OUT; }

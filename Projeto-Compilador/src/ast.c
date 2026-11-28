@@ -3,9 +3,11 @@
 #include "ast.h"
 
 static const char *ROTULOS[] = {
-    "Programa", "Metodo", "Parametro", "Declaracao", "While", "Println", "Print", "Printf",
+    "Programa", "Metodo", "Parametro", "Declaracao",
+    "While", "If", "Bloco", "Println", "Print", "Printf",
     "Atribuicao", "Prefixo", "Posfixo", "Binario", "Unario",
-    "Identificador", "Int", "Double", "String", "Char", "Boolean", "Null"
+    "Identificador", "Int", "Double", "String", "Char",
+    "Boolean", "Null"
 };
 
 static void *alocar_ou_sair(void *ptr)
@@ -87,8 +89,11 @@ void ast_liberar(NoAst *no)
 
         ast_liberar(no->a);
         ast_liberar(no->b);
+        ast_liberar(no->c);
+
         free(no->nome);
         free(no);
+
         no = prox;
     }
 }
@@ -151,8 +156,22 @@ static void imprimir_grupo(const char *titulo, const NoAst *lista, const char *p
     free(prefixo_filhos);
 }
 
+
 static void imprimir_filhos(const NoAst *pai, const char *prefixo, FILE *saida)
 {
+    if (pai->tipo_no == NO_IF) {
+        int tem_senao = pai->c != NULL;
+
+        imprimir_grupo("Condicao", pai->a, prefixo, 0, saida);
+        imprimir_grupo("Entao", pai->b, prefixo, !tem_senao, saida);
+
+        if (tem_senao) {
+            imprimir_grupo("Senao", pai->c, prefixo, 1, saida);
+        }
+
+        return;
+    }
+
     if (pai->tipo_no == NO_WHILE) {
         imprimir_grupo("Condicao", pai->a, prefixo, pai->b == NULL, saida);
         if (pai->b != NULL) {
@@ -160,9 +179,11 @@ static void imprimir_filhos(const NoAst *pai, const char *prefixo, FILE *saida)
         }
         return;
     }
+
     imprimir_lista(pai->a, prefixo, pai->b == NULL, saida);
     imprimir_lista(pai->b, prefixo, 1, saida);
 }
+
 
 void ast_imprimir(const NoAst *no, FILE *saida)
 {

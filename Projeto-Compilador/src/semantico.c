@@ -230,6 +230,34 @@ static void percorrer(const NoAst *no, const TabelaSimbolos *tabela)
                     inferir_tipo_expressao(arg, tabela);
                 break;
 
+            case NO_IF: {
+                const char *tc = inferir_tipo_expressao(no->a, tabela);
+
+                if (tc && strcmp(tc, "boolean") != 0) {
+                    erro(
+                        "condicao do 'if' deve ser 'boolean', recebido '%s'",
+                        tc
+                    );
+                }
+
+                percorrer(no->b, tabela); // Bloco verdadeiro
+                percorrer(no->c, tabela); // Bloco falso
+                break;
+            }
+
+            case NO_BLOCO: {
+                const Escopo *anterior = escopo_atual;
+
+                if (no->escopo) {
+                    escopo_atual = no->escopo;
+                }
+
+                percorrer(no->a, tabela);
+
+                escopo_atual = anterior;
+                break;
+            }
+
             case NO_PREFIXO:
             case NO_POSFIXO:
                 inferir_tipo_expressao(no, tabela);
