@@ -1,0 +1,14 @@
+public class TesteVariavel {
+    public static void main() {
+        int numero = 10;
+        int resultado = 0;
+
+        if (numero > 5) {
+            resultado = 100;
+        } else {
+            resultado = 50;
+        }
+
+        System.out.println(resultado);
+    }
+}

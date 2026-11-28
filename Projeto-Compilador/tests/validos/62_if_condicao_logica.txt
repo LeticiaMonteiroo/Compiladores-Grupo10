@@ -1,0 +1,12 @@
+public class TesteLogico {
+    public static void main() {
+        int idade = 20;
+        boolean possuiIngresso = true;
+
+        if (idade >= 18 && possuiIngresso == true) {
+            System.out.println("Entrada permitida");
+        } else {
+            System.out.println("Entrada negada");
+        }
+    }
+}

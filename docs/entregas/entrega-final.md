@@ -48,6 +48,7 @@ testes desta versão. As atividades e atribuições individuais acima seguem o
 registro do grupo:
 
 - **Parser e AST:** suporte ampliado para parâmetros de métodos, impressão,
+  condicionais `if/else` (condição `boolean`, blocos com escopo próprio),
   representação hierárquica da AST e construções já descritas em
   [Escopo](../compiladordetalhes/escopo.md).
 - **Análise semântica:** módulos e verificações para redeclaração, uso de variáveis, inferência e compatibilidade de tipos e visibilidade entre escopos.
