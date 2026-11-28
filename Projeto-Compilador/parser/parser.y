@@ -57,7 +57,7 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome,
 /* Palavras-chave de classe / membros */
 
 %token CLASS PUBLIC PRIVATE PROTECTED STATIC VOID RETURN
-%token WHILE SYSTEM OUT PRINTLN PRINT PRINTF
+%token WHILE IF ELSE SYSTEM OUT PRINTLN PRINT PRINTF
 
 
 
@@ -109,18 +109,16 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome,
 %destructor { ast_liberar($$); } <no>
 %destructor { free($$); } <sval>
 
-
 /* Tipos dos não-terminais */
 
 %type <tnome> tipo tipo_retorno
 %type <no> lista_membros membro membro_metodo
 %type <no> lista_parametros_opt lista_parametros parametro
-%type <no> lista_comandos comando comando_declaracao comando_while
+%type <no> lista_comandos comando comando_declaracao comando_while comando_if bloco_comandos
 %type <no> comando_printf comando_print lista_argumentos
 %type <no> comando_reatribuicao comando_incremento_decremento
 %type <no> expressao expressao_and expressao_not expressao_relacional
 %type <no> expressao_aritmetica termo fator operando
-
 
 /* Precedência dos operadores lógicos */
 
@@ -128,6 +126,8 @@ static NoAst *criar_declaracao(const char *tipo, const char *nome,
 %left AND
 %right NOT
 
+%nonassoc IF_SEM_ELSE
+%nonassoc ELSE
 
 %start programa
 
@@ -283,8 +283,35 @@ comando_declaracao
             free($2);
         }
     ;
+
+    bloco_comandos
+    : LBRACE
+        {
+            $<escopo>$ = tabela_entrar_escopo(
+                tabela_simbolos,
+                ESCOPO_BLOCO,
+                NULL
+            );
+        }
+      lista_comandos RBRACE
+        {
+            $$ = ast_criar_no(
+                NO_BLOCO,
+                NULL,
+                NULL,
+                $3,
+                NULL
+            );
+
+            $$->escopo = $<escopo>2;
+
+            tabela_sair_escopo(tabela_simbolos);
+        }
+    ;
+
 comando
     : comando_while
+    | comando_if
     | comando_reatribuicao
     | comando_incremento_decremento
     | comando_declaracao
@@ -306,6 +333,34 @@ comando_while
             $$ = ast_criar_no(NO_WHILE, NULL, NULL, $3, $7);
             $$->escopo = $<escopo>6;
             tabela_sair_escopo(tabela_simbolos);
+        }
+    ;
+
+comando_if
+    : IF LPAREN expressao RPAREN bloco_comandos
+        %prec IF_SEM_ELSE
+        {
+            $$ = ast_criar_no(
+                NO_IF,
+                NULL,
+                NULL,
+                $3,
+                $5
+            );
+        }
+
+    | IF LPAREN expressao RPAREN bloco_comandos
+      ELSE bloco_comandos
+        {
+            $$ = ast_criar_no(
+                NO_IF,
+                NULL,
+                NULL,
+                $3,
+                $5
+            );
+
+            $$->c = $7;
         }
     ;
 

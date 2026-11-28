@@ -1,6 +1,7 @@
+
 CC = gcc
 CFLAGS = -Wall -Wextra -I. -Isrc
-LDLIBS = -lfl
+LDLIBS =
 
 LEXER_SRC = lexer/lexer.l
 PARSER_SRC = parser/parser.y

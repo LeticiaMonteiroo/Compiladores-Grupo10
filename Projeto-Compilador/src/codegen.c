@@ -473,6 +473,31 @@ static void emitir_expressao(const NoAst *no, FILE *saida)
     }
 }
 
+static void emitir_comandos(
+    const NoAst *no,
+    int nivel,
+    const ContextoBloco *pai,
+    FILE *saida
+);
+
+static void emitir_bloco(
+    const NoAst *bloco,
+    int nivel,
+    const ContextoBloco *pai,
+    FILE *saida
+)
+{
+    emitir_indentacao(nivel, saida);
+    fputs("{\n", saida);
+
+    if (bloco != NULL) {
+        emitir_comandos(bloco->a, nivel + 1, pai, saida);
+    }
+
+    emitir_indentacao(nivel, saida);
+    fputs("}\n", saida);
+}
+
 static void emitir_comandos(const NoAst *no, int nivel, const ContextoBloco *pai, FILE *saida)
 {
     int renomeacoes_do_bloco = total_renomeacoes;
@@ -525,6 +550,20 @@ static void emitir_comandos(const NoAst *no, int nivel, const ContextoBloco *pai
                 emitir_comandos(no->b, nivel + 1, &ctx, saida);
                 emitir_indentacao(nivel, saida);
                 fputs("}\n", saida);
+                break;
+
+            case NO_IF:
+                emitir_indentacao(nivel, saida);
+                fputs("if (", saida);
+                emitir_expressao(no->a, saida);
+                fputs(")\n", saida);
+                emitir_bloco(no->b, nivel, &ctx, saida);
+
+                if (no->c != NULL) {
+                    emitir_indentacao(nivel, saida);
+                    fputs("else\n", saida);
+                    emitir_bloco(no->c, nivel, &ctx, saida);
+                }
                 break;
 
             case NO_PRINTLN:
