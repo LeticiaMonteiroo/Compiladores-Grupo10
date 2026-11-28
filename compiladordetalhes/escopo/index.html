@@ -1,0 +1,1331 @@
+<!DOCTYPE html><html lang="pt" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../metodologia/">
+      
+      
+        <link rel="next" href="../como-executar/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Escopo - Compiladores - Grupo 10</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#escopo-da-linguagem-java-c" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Compiladores - Grupo 10" class="md-header__button md-logo" aria-label="Compiladores - Grupo 10" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compiladores - Grupo 10
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Escopo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal" aria-label="Mudar para o modo escuro" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo escuro" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal" aria-label="Mudar para o modo claro" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo claro" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../decisoes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Decisões
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../planejamento/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Planejamento
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../metodologia/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Metodologia
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  O Compilador
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../entregas/entrega1/" class="md-tabs__link">
+          
+  
+  
+  Entregas
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compiladores - Grupo 10" class="md-nav__button md-logo" aria-label="Compiladores - Grupo 10" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+
+    </a>
+    Compiladores - Grupo 10
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../decisoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../planejamento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Planejamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../metodologia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metodologia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    O Compilador
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    O Compilador
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Escopo
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Escopo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-do-compilador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo do compilador
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapeamento-de-tipos-e-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapeamento de tipos e comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particularidades-da-traducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularidades da tradução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-traducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de tradução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operadores-aceitos-na-sintaxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operadores aceitos na sintaxe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-atuais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações atuais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-codigo-aceito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de código aceito
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemplo de código aceito">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-com-ifelse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo com if/else
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../como-executar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Como executar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entregas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entregas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../entregas/entrega1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrega 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../entregas/entrega2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrega 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../entregas/entrega-final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrega Final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#fluxo-do-compilador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo do compilador
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapeamento-de-tipos-e-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapeamento de tipos e comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particularidades-da-traducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particularidades da tradução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-traducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de tradução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operadores-aceitos-na-sintaxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operadores aceitos na sintaxe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitacoes-atuais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitações atuais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-codigo-aceito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo de código aceito
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemplo de código aceito">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-com-ifelse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemplo com if/else
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="escopo-da-linguagem-java-c">Escopo da Linguagem (Java → C#)</h1>
+<blockquote>
+<p>Este documento descreve o subconjunto que o compilador reconhece atualmente.
+O projeto gera C# para parte das construções suportadas, mas ainda não
+implementa uma tradução completa de Java. As decisões sobre o escopo
+estão em <a href="../../decisoes/">Decisões de Projeto</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Área</th>
+<th>Implementado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tipos</td>
+<td><code>int</code>, <code>double</code>, <code>float</code>, <code>boolean</code>, <code>char</code>, <code>long</code>, <code>short</code>, <code>byte</code>, <code>String</code> e <code>void</code> como tipo de retorno</td>
+</tr>
+<tr>
+<td>Classe</td>
+<td>Uma classe por programa; modificador <code>public</code> opcional</td>
+</tr>
+<tr>
+<td>Métodos</td>
+<td>Métodos com tipo de retorno e um modificador de acesso (<code>public</code>, <code>private</code> ou <code>protected</code>), com <code>static</code> opcional, ou somente <code>static</code></td>
+</tr>
+<tr>
+<td>Parâmetros</td>
+<td>Parâmetros posicionais com tipo e nome, separados por vírgula; representados na AST</td>
+</tr>
+<tr>
+<td>Declarações locais</td>
+<td>Variáveis dos tipos listados, com ou sem inicialização</td>
+</tr>
+<tr>
+<td>Atribuições</td>
+<td>Atribuição simples (<code>=</code>) e composta (<code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>)</td>
+</tr>
+<tr>
+<td>Incremento/decremento</td>
+<td>Formas prefixas e pós-fixas (<code>++</code> e <code>--</code>), como comandos ou fatores de expressão</td>
+</tr>
+<tr>
+<td>Laços</td>
+<td><code>while</code> com condição e bloco</td>
+</tr>
+<tr>
+<td>Condicionais</td>
+<td><code>if</code> com <code>else</code> opcional; a condição deve ser <code>boolean</code> e os corpos ficam entre chaves</td>
+</tr>
+<tr>
+<td>Expressões</td>
+<td>Literais, identificadores, parênteses, operadores aritméticos, relacionais e lógicos</td>
+</tr>
+<tr>
+<td>Comentários</td>
+<td>Comentários de linha (<code>//</code>) e de bloco (<code>/* ... */</code>), ignorados pelo lexer</td>
+</tr>
+<tr>
+<td>AST</td>
+<td>Árvore sintática abstrata construída durante o parsing e impressa ao final</td>
+</tr>
+<tr>
+<td>Tabela de símbolos</td>
+<td>Pilha de escopos (global, método e blocos de <code>while</code>, <code>if</code> e <code>else</code>); registra classe, métodos, parâmetros e variáveis; é impressa ao final, por escopo</td>
+</tr>
+<tr>
+<td>Geração de C#</td>
+<td>Saída parcial para declarações locais, atribuições, <code>while</code>, <code>if/else</code>, operadores e comandos de impressão suportados</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fluxo-do-compilador">Fluxo do compilador</h2>
+<ol>
+<li><strong>Análise léxica — Flex (<code>Projeto-Compilador/lexer/lexer.l</code>):</strong> transforma
+   caracteres em tokens, reconhecendo palavras-chave, identificadores,
+   literais, operadores e delimitadores, e ignora espaços e comentários.</li>
+<li><strong>Análise sintática — Bison (<code>Projeto-Compilador/parser/parser.y</code>):</strong> valida
+   a sequência de tokens segundo a gramática e constrói a AST.</li>
+<li><strong>AST e tabela de símbolos (<code>src/ast.c</code>, <code>src/tabela_simbolos.c</code>):</strong> a AST
+   representa classes, métodos, comandos e expressões; a tabela registra
+   símbolos nos escopos global, de método e de bloco (<code>while</code>, <code>if</code> e <code>else</code>).</li>
+<li><strong>Análise semântica (<code>src/semantico.c</code>):</strong> verifica redeclarações,
+   visibilidade e ordem de uso de variáveis, compatibilidade de tipos e
+   condições booleanas de <code>while</code> e <code>if</code>.</li>
+<li><strong>Geração de C# (<code>src/codegen.c</code>):</strong> após sucesso das análises, pode emitir
+   C# para os nós de AST suportados quando um caminho de saída é fornecido.
+   A saída não é executada pelo compilador.</li>
+</ol>
+<h2 id="mapeamento-de-tipos-e-comandos">Mapeamento de tipos e comandos</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo Java reconhecido</th>
+<th>Saída C#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td><code>String</code></td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td><code>byte</code></td>
+<td><code>sbyte</code></td>
+</tr>
+<tr>
+<td><code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>char</code>, <code>void</code></td>
+<td>Mantido sem alteração</td>
+</tr>
+</tbody>
+</table>
+<p><code>System.out.println</code> é traduzido para <code>Console.WriteLine</code>, <code>System.out.print</code>
+para <code>Console.Write</code> e as formas reconhecidas de <code>printf</code> para <code>Console.Write</code>.
+Um método chamado <code>main</code> é emitido como <code>public static void Main(string[] args)</code>.
+Os demais métodos são emitidos como <code>public</code>; os modificadores de acesso
+originais não são preservados.</p>
+<h2 id="particularidades-da-traducao">Particularidades da tradução</h2>
+<ul>
+<li><strong>Condicionais:</strong> <code>if (cond) { ... } else { ... }</code> é emitido com as chaves em
+  linhas próprias, como nos demais blocos.</li>
+<li><strong>Variáveis de bloco com o mesmo nome:</strong> Java aceita declarar <code>int x</code> dentro
+  de um bloco (<code>while</code>, <code>if</code> ou <code>else</code>) e outro <code>int x</code> depois dele, no bloco
+  externo; C# rejeita isso (erro CS0136). O gerador renomeia a variável interna
+  (<code>x</code> vira <code>x_1</code>) e todos os seus usos dentro do bloco.</li>
+<li><strong>Parênteses:</strong> a AST não guarda parênteses, então o gerador os reinsere
+  conforme a precedência, inclusive à direita de operadores de mesma
+  precedência (<code>"x" + (1 + 2)</code> não vira <code>"x" + 1 + 2</code>) e em sinais repetidos
+  (<code>-(-a)</code>, para não virar o decremento <code>--a</code>).</li>
+<li><strong><code>boolean</code> em texto:</strong> o C# imprime <code>True</code>/<code>False</code>; para manter o Java
+  (<code>true</code>/<code>false</code>), valores <code>boolean</code> impressos ou concatenados a texto são
+  emitidos com <code>.ToString().ToLower()</code>.</li>
+<li><strong><code>printf</code>:</strong> o formato é convertido para o do C#: <code>%d</code>, <code>%s</code>, <code>%c</code> e <code>%b</code>
+  viram <code>{0}</code>, <code>{1}</code>, ...; <code>%f</code> e <code>%.2f</code> viram <code>{0:F6}</code> e <code>{0:F2}</code>; <code>%x</code> e
+  <code>%X</code> mantêm a caixa; largura (<code>%5d</code>, <code>%-5d</code>) vira <code>{0,5}</code> e <code>{0,-5}</code>; <code>%n</code> vira
+  quebra de linha e <code>%%</code> vira <code>%</code>.</li>
+<li><strong>Caracteres e identificadores:</strong> escapes de <code>char</code> (<code>'\n'</code>, <code>'\''</code>) são
+  preservados; identificadores que são palavras reservadas do C# recebem <code>@</code>
+  (<code>string</code> vira <code>@string</code>) e <code>$</code> é substituído por <code>_S_</code>.</li>
+<li><strong>Parâmetros de array:</strong> <code>int[] v</code> é emitido como <code>int[] v</code>.</li>
+<li><strong>Métodos sem <code>return</code>:</strong> como a gramática não tem <code>return</code>, todo método que
+  não é <code>void</code> nem <code>main</code> termina com <code>throw new NotImplementedException();</code>,
+  para que o C# gerado compile.</li>
+<li><strong>Erros léxicos:</strong> um caractere inválido é contado como erro e impede a
+  geração, assim como erros sintáticos e semânticos.</li>
+</ul>
+<h2 id="exemplo-de-traducao">Exemplo de tradução</h2>
+<p>Entrada (<code>HelloWorld.java</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloWorld</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Comando, executado na pasta <code>Projeto-Compilador</code>:</p>
+<div class="highlight"><pre><span></span><code>./compilador<span class="w"> </span>tests/validos/39_hello_world.java<span class="w"> </span>/tmp/HelloWorld.cs
+</code></pre></div>
+<p>Saída gerada:</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">System</span><span class="p">;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">HelloWorld</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="operadores-aceitos-na-sintaxe">Operadores aceitos na sintaxe</h2>
+<ul>
+<li><strong>Aritméticos binários:</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, com precedência usual
+  entre adição/subtração e multiplicação/divisão/resto.</li>
+<li><strong>Aritméticos unários:</strong> <code>+</code> e <code>-</code>.</li>
+<li><strong>Relacionais:</strong> <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>.</li>
+<li><strong>Lógicos:</strong> <code>&amp;&amp;</code>, <code>||</code> e <code>!</code>.</li>
+<li><strong>Incremento e decremento:</strong> <code>++</code> e <code>--</code>, prefixos ou pós-fixos.</li>
+<li><strong>Atribuição:</strong> <code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code> como comandos.</li>
+</ul>
+<p>O lexer também reconhece operadores bit a bit (<code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;&gt;</code>, <code>&amp;</code>, <code>|</code>,
+<code>^</code>, <code>~</code>), mas eles <strong>não são aceitos nas produções da gramática</strong>.</p>
+<h2 id="limitacoes-atuais">Limitações atuais</h2>
+<ul>
+<li><strong>Geração de C#:</strong> cobre somente os nós de AST implementados e não garante
+  uma tradução completa ou compilável para qualquer programa Java.</li>
+<li><strong>Chamadas de método:</strong> chamadas não fazem parte da gramática. Parâmetros
+  são aceitos nas assinaturas e ficam no escopo do método.</li>
+<li><strong>Retorno de métodos:</strong> <code>return</code> é reconhecido pelo lexer, mas ainda não há
+  produção sintática para ele.</li>
+<li><strong>Outras estruturas de controle:</strong> <code>for</code>, <code>do-while</code> e <code>switch</code>. No <code>if</code>, a
+  gramática exige blocos entre chaves e o <code>else</code> aceita somente um bloco:
+  <code>else if</code> e <code>if</code>/<code>else</code> sem chaves (corpo de um único comando) resultam em
+  erro de sintaxe.</li>
+<li><strong>Expressões e comandos adicionais:</strong> arrays são aceitos somente como tipo de
+  parâmetro; declarações e acesso a elementos, acesso a membros, chamadas,
+  operadores bit a bit e atribuições dentro de expressões não são suportados.</li>
+<li><strong>Orientação a objetos completa:</strong> herança, interfaces, polimorfismo,
+  construtores, atributos e múltiplas classes por arquivo.</li>
+<li><strong>Análise semântica:</strong> cobre redeclaração, escopo de variáveis (método e
+  blocos de <code>while</code>, <code>if</code> e <code>else</code>), uso de identificadores e compatibilidade de tipos em
+  declarações, atribuições e condições. Variáveis e parâmetros não podem
+  sombrear outro nome local do mesmo método. Uma variável declarada dentro de
+  um bloco não é visível fora dele, e os blocos <code>then</code> e <code>else</code> podem declarar
+  o mesmo nome. Não há verificação de retorno nem
+  de chamadas, pois essas construções não existem na gramática.</li>
+</ul>
+<h2 id="exemplo-de-codigo-aceito">Exemplo de código aceito</h2>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Exemplo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">contador</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">contador</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>O parser reconhece o exemplo, constrói a AST e a tabela de símbolos e imprime
+ambas. Também é possível solicitar a geração parcial de C# passando um caminho
+de saída ao executável; isso não significa que o programa gerado seja executado
+ou que todos os recursos de Java estejam traduzidos.</p>
+<h3 id="exemplo-com-ifelse">Exemplo com <code>if/else</code></h3>
+<p>Entrada (<code>Idade.java</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Idade</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"Maior de idade"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"Menor de idade"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Saída gerada:</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">System</span><span class="p">;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Idade</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Maior de idade"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Menor de idade"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Na AST impressa, o <code>if</code> aparece com os grupos <code>Condicao</code>, <code>Entao</code> e, quando
+existe, <code>Senao</code>; cada corpo é um nó <code>Bloco</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Rodapé">
+        
+          
+          <a href="../../metodologia/" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Metodologia">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Metodologia
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../como-executar/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Como executar">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              <div class="md-ellipsis">
+                Como executar
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
