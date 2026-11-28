@@ -1,0 +1,7 @@
+public class TesteElseSemIf {
+    public static void main() {
+        else {
+            System.out.println("Menor de idade");
+        }
+    }
+}

@@ -1,0 +1,7 @@
+public class TesteIfSemCondicao {
+    public static void main() {
+        if () {
+            System.out.println("Teste");
+        }
+    }
+}
